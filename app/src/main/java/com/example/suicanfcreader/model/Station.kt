@@ -99,10 +99,24 @@ data class Station(
                 val rawStation = stationCacheRaw[key]
                 if (rawStation != null) {
                     if (station.stationName == rawStation.stationName) {
-                        station.stationName = com.example.suicanfcreader.lib.StationTranslator.translate(station.stationName)
+                        val query = if (station.stationName.endsWith("駅")) station.stationName else station.stationName + "駅"
+                        val translated = com.example.suicanfcreader.lib.StationTranslator.translate(query)
+                        station.stationName = translated
+                            .replace("역", "")
+                            .replace(" Station", "", ignoreCase = true)
+                            .replace(" station", "", ignoreCase = true)
+                            .replace("站", "")
+                            .trim()
                     }
                     if (station.lineName == rawStation.lineName) {
-                        station.lineName = com.example.suicanfcreader.lib.StationTranslator.translate(station.lineName)
+                        val query = if (station.lineName.endsWith("線")) station.lineName else station.lineName + "線"
+                        val translated = com.example.suicanfcreader.lib.StationTranslator.translate(query)
+                        station.lineName = translated
+                            .replace("선", "")
+                            .replace(" Line", "", ignoreCase = true)
+                            .replace(" line", "", ignoreCase = true)
+                            .replace("线", "")
+                            .trim()
                     }
                     if (station.company == rawStation.company) {
                         station.company = com.example.suicanfcreader.lib.StationTranslator.translate(station.company)
