@@ -27,9 +27,22 @@ android {
         }
     }
 
+    signingConfigs {
+        create("config") {
+            storeFile = file("debug.keystore")
+            storePassword = "android"
+            keyAlias = "androiddebugkey"
+            keyPassword = "android"
+        }
+    }
+
     buildTypes {
+        debug {
+            signingConfig = signingConfigs.getByName("config")
+        }
         release {
             isMinifyEnabled = false
+            signingConfig = signingConfigs.getByName("config")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
