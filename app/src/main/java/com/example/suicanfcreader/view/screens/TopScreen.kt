@@ -90,51 +90,45 @@ fun TopScreen(
                 )
                 .padding(padding)
         ) {
-            // Optimized Background Elements (Glow effect without heavy blur)
-            Box(
-                modifier = Modifier
-                    .offset(x = (-50).dp, y = (-50).dp)
-                    .size(300.dp)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(SuicaGreen.copy(alpha = 0.15f), Color.Transparent),
-                            center = androidx.compose.ui.geometry.Offset(150f, 150f)
-                        )
-                    )
-            )
-            Box(
-                modifier = Modifier
-                    .align(Alignment.CenterEnd)
-                    .offset(x = 100.dp, y = (-100).dp)
-                    .size(250.dp)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(JRBlue.copy(alpha = 0.12f), Color.Transparent)
-                        )
-                    )
-            )
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomStart)
-                    .offset(x = (-80).dp, y = 80.dp)
-                    .size(350.dp)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(Purple40.copy(alpha = 0.1f), Color.Transparent)
-                        )
-                    )
-            )
-            Box(
-                modifier = Modifier
-                    .align(Alignment.BottomEnd)
-                    .offset(x = 50.dp, y = 50.dp)
-                    .size(300.dp)
-                    .background(
-                        Brush.radialGradient(
-                            colors = listOf(SuicaGreen.copy(alpha = 0.12f), Color.Transparent)
-                        )
-                    )
-            )
+            // Optimized Background Elements (Canvas for better performance instead of overlapping Boxes)
+            androidx.compose.foundation.Canvas(modifier = Modifier.fillMaxSize()) {
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(SuicaGreen.copy(alpha = 0.15f), Color.Transparent),
+                        center = androidx.compose.ui.geometry.Offset(150.dp.toPx(), 150.dp.toPx()),
+                        radius = 150.dp.toPx()
+                    ),
+                    center = androidx.compose.ui.geometry.Offset(100.dp.toPx(), 100.dp.toPx()),
+                    radius = 150.dp.toPx()
+                )
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(JRBlue.copy(alpha = 0.12f), Color.Transparent),
+                        center = androidx.compose.ui.geometry.Offset(size.width - 25.dp.toPx(), 25.dp.toPx()),
+                        radius = 125.dp.toPx()
+                    ),
+                    center = androidx.compose.ui.geometry.Offset(size.width - 25.dp.toPx(), 25.dp.toPx()),
+                    radius = 125.dp.toPx()
+                )
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(Purple40.copy(alpha = 0.1f), Color.Transparent),
+                        center = androidx.compose.ui.geometry.Offset(95.dp.toPx(), size.height - 95.dp.toPx()),
+                        radius = 175.dp.toPx()
+                    ),
+                    center = androidx.compose.ui.geometry.Offset(95.dp.toPx(), size.height - 95.dp.toPx()),
+                    radius = 175.dp.toPx()
+                )
+                drawCircle(
+                    brush = Brush.radialGradient(
+                        colors = listOf(SuicaGreen.copy(alpha = 0.12f), Color.Transparent),
+                        center = androidx.compose.ui.geometry.Offset(size.width - 100.dp.toPx(), size.height - 100.dp.toPx()),
+                        radius = 150.dp.toPx()
+                    ),
+                    center = androidx.compose.ui.geometry.Offset(size.width - 100.dp.toPx(), size.height - 100.dp.toPx()),
+                    radius = 150.dp.toPx()
+                )
+            }
 
             Column(
                 modifier = Modifier
@@ -190,13 +184,7 @@ fun TopScreen(
                             items = nfcCards,
                             key = { it.number ?: it.hashCode() }
                         ) { card ->
-                            AnimatedVisibility(
-                                visible = true,
-                                enter = fadeIn(animationSpec = tween(400)) +
-                                        slideInVertically(initialOffsetY = { 30 }, animationSpec = tween(400))
-                            ) {
-                                HistoryCard(card)
-                            }
+                            HistoryCard(card)
                         }
                     }
                 }
@@ -208,12 +196,11 @@ fun TopScreen(
                     modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    // Background Blur Layer
+                    // Semi-transparent background
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
                             .background(Color.Black.copy(alpha = 0.8f))
-                            .blur(20.dp)
                     )
                     
                     Column(
@@ -344,8 +331,12 @@ fun EmptyStateView() {
                 Box(
                     modifier = Modifier
                         .size(140.dp)
-                        .blur(40.dp)
-                        .background(SuicaGreen.copy(alpha = 0.15f), RoundedCornerShape(70.dp))
+                        .background(
+                            Brush.radialGradient(
+                                colors = listOf(SuicaGreen.copy(alpha = 0.3f), Color.Transparent)
+                            ),
+                            shape = RoundedCornerShape(70.dp)
+                        )
                 )
                 Icon(
                     imageVector = Icons.Default.Nfc,
