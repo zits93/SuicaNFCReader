@@ -154,14 +154,14 @@ fun TopScreen(
                     ) {
                         Column {
                             Text(
-                                text = "Setup AI Translation",
+                                text = stringResource(R.string.setup_ai_title),
                                 style = MaterialTheme.typography.titleMedium,
                                 color = Color.White,
                                 fontWeight = FontWeight.Bold
                             )
                             Spacer(modifier = Modifier.height(4.dp))
                             Text(
-                                text = "Enhance your experience with real-time station name translation in your language.",
+                                text = stringResource(R.string.setup_ai_desc),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = Color.White.copy(alpha = 0.7f)
                             )
@@ -172,7 +172,7 @@ fun TopScreen(
                                 colors = ButtonDefaults.buttonColors(containerColor = SuicaGreen),
                                 shape = RoundedCornerShape(12.dp)
                             ) {
-                                Text("Get Started", fontWeight = FontWeight.Bold)
+                                Text(stringResource(R.string.setup_ai_button), fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -214,13 +214,13 @@ fun TopScreen(
                         CircularProgressIndicator(color = SuicaGreen, strokeWidth = 4.dp)
                         Spacer(modifier = Modifier.height(24.dp))
                         Text(
-                            text = "Downloading AI Model...",
+                            text = stringResource(R.string.downloading_title),
                             style = MaterialTheme.typography.titleMedium,
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = "Please wait while we prepare your offline translation kit.",
+                            text = stringResource(R.string.downloading_desc),
                             style = MaterialTheme.typography.bodySmall,
                             color = Color.White.copy(alpha = 0.6f),
                             modifier = Modifier.padding(top = 8.dp)
@@ -261,7 +261,7 @@ fun EmptyStateView() {
             }
             Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = "Ready to Scan",
+                text = stringResource(R.string.ready_to_scan),
                 style = MaterialTheme.typography.headlineSmall,
                 color = Color.White,
                 fontWeight = FontWeight.Bold

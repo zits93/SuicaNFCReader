@@ -8,16 +8,20 @@
     <string name="history_count">%d History Items</string>
     <string name="boarding">Departure</string>
     <string name="alighting">Arrival</string>
-    <string name="payment_method">Payment Method: %s</string>
+    <string name="payment_method">Payment: %s</string>
     <string name="unknown">Unknown</string>
-    <string name="balance_symbol">¥</string>
-    <string name="balance_label"> Balance</string>
-
-
-    <!-- Kinds -->
-    <string name="kind_shopping">Retail</string>
+    <string name="kind_shopping">Purchase</string>
+    <string name="kind_jr">JR Line</string>
     <string name="kind_bus">Bus</string>
-    <string name="kind_jr">JR</string>
+
+    <string name="setup_ai_title">Setup AI Translation</string>
+    <string name="setup_ai_desc">Enhance your experience with real-time station name translation in your language.</string>
+    <string name="setup_ai_button">Get Started</string>
+    <string name="downloading_title">Downloading AI Model…</string>
+    <string name="downloading_desc">Please wait while we prepare your offline translation kit.</string>
+    <string name="ready_to_scan">Ready to Scan</string>
+    <string name="balance_label">Balance</string>
+    <string name="balance_symbol">¥</string>
     <string name="kind_public_private">Public/Private</string>
 
     <!-- Devices -->
