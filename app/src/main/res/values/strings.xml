@@ -1,4 +1,65 @@
 <resources>
     <string name="app_name">Suica NFC Reader</string>
     <string name="top_screen">Top Screen</string>
+    <string name="app_title">Suica Reader</string>
+    <string name="scan_prompt">Please scan your card</string>
+    <string name="nfc_off_prompt">Please turn on NFC and touch the card to the back</string>
+    <string name="history_count">%d History Items</string>
+    <string name="boarding">Boarding</string>
+    <string name="alighting">Alighting</string>
+    <string name="payment_method">Payment Method: %s</string>
+    <string name="unknown">Unknown</string>
+    <string name="balance_symbol">¥</string>
+
+    <!-- Kinds -->
+    <string name="kind_shopping">Retail</string>
+    <string name="kind_bus">Bus</string>
+    <string name="kind_jr">JR</string>
+    <string name="kind_public_private">Public/Private</string>
+
+    <!-- Devices -->
+    <string name="device_adjustment_machine">Adjustment Machine</string>
+    <string name="device_mobile_terminal">Mobile Terminal</string>
+    <string name="device_onboard_terminal">Onboard Terminal</string>
+    <string name="device_ticket_vending_machine">Ticket Machine</string>
+    <string name="device_deposit_machine">Deposit Machine</string>
+    <string name="device_ticket_gate">Ticket Gate</string>
+    <string name="device_simple_ticket_gate">Simple Ticket Gate</string>
+    <string name="device_window_terminal">Window Terminal</string>
+    <string name="device_mobile_phone">Mobile Phone</string>
+    <string name="device_transfer_adjustment_machine">Transfer Adjustment Machine</string>
+    <string name="device_connection_ticket_gate">Connection Ticket Gate</string>
+    <string name="device_simple_deposit_machine">Simple Deposit Machine</string>
+    <string name="device_shopping_terminal">Retail Terminal</string>
+    <string name="device_vending_machine">Vending Machine</string>
+    <string name="device_view_altte">VIEW ALTTE</string>
+
+    <!-- Actions -->
+    <string name="action_fare_payment">Fare Payment (Exit)</string>
+    <string name="action_charge">Charge</string>
+    <string name="action_ticket_purchase">Ticket Purchase</string>
+    <string name="action_adjustment">Adjustment</string>
+    <string name="action_adjustment_in">Adjustment (In-station)</string>
+    <string name="action_window_processing">Window Processing</string>
+    <string name="action_new_issuance">New Issuance</string>
+    <string name="action_window_deduction">Window Deduction</string>
+    <string name="action_bus_pitapa">Bus (PiTaPa)</string>
+    <string name="action_bus_iruca">Bus (IruCa)</string>
+    <string name="action_reissuance">Reissuance</string>
+    <string name="action_shinkansen">Shinkansen</string>
+    <string name="action_auto_charge_in">Auto-charge (In)</string>
+    <string name="action_auto_charge_out">Auto-charge (Out)</string>
+    <string name="action_bus_charge">Bus Charge</string>
+    <string name="action_bus_plan_ticket">Bus Plan Ticket Purchase</string>
+    <string name="action_shopping">Retail</string>
+    <string name="action_point_charge">Point Charge</string>
+    <string name="action_register_deposit">Register Deposit</string>
+    <string name="action_shopping_cancel">Retail Cancel</string>
+    <string name="action_in_station_shopping">In-station Retail</string>
+    <string name="action_cash_shopping">Cash Retail</string>
+    <string name="action_in_station_cash_shopping">In-station Cash Retail</string>
+    <string name="action_other_adjustment">Adjustment (Other Co.)</string>
+    <string name="action_other_in_station_adjustment">In-station Adjustment (Other Co.)</string>
+
+    <string name="date_format">%1$d/%2$02d/%3$02d</string>
 </resources>

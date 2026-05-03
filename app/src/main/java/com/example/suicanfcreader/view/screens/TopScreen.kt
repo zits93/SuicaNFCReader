@@ -12,6 +12,9 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.DirectionsBus
+import androidx.compose.material.icons.filled.Nfc
+import androidx.compose.material.icons.filled.Train
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -29,12 +32,14 @@ import com.example.suicanfcreader.model.Card
 import com.example.suicanfcreader.ui.theme.*
 import com.example.suicanfcreader.viewModel.TopScreenViewModel
 
+import androidx.compose.ui.res.stringResource
+import com.example.suicanfcreader.R
+
 @Composable
 fun TopScreen(
     topScreenViewModel: TopScreenViewModel
 ) {
     val nfcCards by topScreenViewModel.nfcCards.observeAsState(emptyList())
-    val isDataRefreshed by topScreenViewModel.isDataRefreshed.observeAsState(false)
 
     Box(
         modifier = Modifier
@@ -70,7 +75,7 @@ fun TopScreen(
             Spacer(modifier = Modifier.height(60.dp))
 
             Text(
-                text = "Suica Reader",
+                text = stringResource(R.string.app_title),
                 style = MaterialTheme.typography.headlineLarge,
                 color = Color.White,
                 fontWeight = FontWeight.Bold,
@@ -78,7 +83,7 @@ fun TopScreen(
             )
             
             Text(
-                text = if (nfcCards.isEmpty()) "카드를 스캔해주세요" else "${nfcCards.size}개의 이용 내역",
+                text = if (nfcCards.isEmpty()) stringResource(R.string.scan_prompt) else stringResource(R.string.history_count, nfcCards.size),
                 style = MaterialTheme.typography.bodyMedium,
                 color = Color.White.copy(alpha = 0.7f)
             )
@@ -125,7 +130,7 @@ fun EmptyStateView() {
             )
             Spacer(modifier = Modifier.height(16.dp))
             Text(
-                text = "NFC를 켜고 카드를 기기 뒷면에 대주세요",
+                text = stringResource(R.string.nfc_off_prompt),
                 style = MaterialTheme.typography.bodyLarge,
                 color = Color.White.copy(alpha = 0.5f)
             )
@@ -135,15 +140,15 @@ fun EmptyStateView() {
 
 @Composable
 fun HistoryCard(card: Card) {
-    val typeColor = when (card.kind) {
-        "물판" -> ShoppingOrange
-        "JR" -> JRBlue
+    val typeColor = when (card.kindResId) {
+        R.string.kind_shopping -> ShoppingOrange
+        R.string.kind_jr -> JRBlue
         else -> SuicaGreen
     }
 
-    val icon = when (card.kind) {
-        "물판" -> Icons.Default.ShoppingCart
-        "버스" -> Icons.Default.DirectionsBus
+    val icon = when (card.kindResId) {
+        R.string.kind_shopping -> Icons.Default.ShoppingCart
+        R.string.kind_bus -> Icons.Default.DirectionsBus
         else -> Icons.Default.Train
     }
 
@@ -179,13 +184,13 @@ fun HistoryCard(card: Card) {
                     Spacer(modifier = Modifier.width(12.dp))
                     Column {
                         Text(
-                            text = card.kind ?: "기타",
+                            text = if (card.kindResId != 0) stringResource(card.kindResId) else stringResource(R.string.unknown),
                             style = MaterialTheme.typography.titleMedium,
                             color = Color.White,
                             fontWeight = FontWeight.Bold
                         )
                         Text(
-                            text = card.date ?: "",
+                            text = stringResource(R.string.date_format, card.year, card.month, card.day),
                             style = MaterialTheme.typography.bodySmall,
                             color = Color.White.copy(alpha = 0.5f)
                         )
@@ -193,20 +198,20 @@ fun HistoryCard(card: Card) {
                 }
                 
                 Text(
-                    text = "¥${card.balance}",
+                    text = "${stringResource(R.string.balance_symbol)}${card.balance}",
                     style = MaterialTheme.typography.titleLarge,
                     color = BalanceGold,
                     fontWeight = FontWeight.ExtraBold
                 )
             }
 
-            if (card.kind != "물판") {
+            if (card.kindResId != R.string.kind_shopping) {
                 Spacer(modifier = Modifier.height(16.dp))
                 
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
-                            text = "승차",
+                            text = stringResource(R.string.boarding),
                             style = MaterialTheme.typography.labelSmall,
                             color = Color.White.copy(alpha = 0.4f)
                         )
@@ -232,7 +237,7 @@ fun HistoryCard(card: Card) {
 
                     Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
                         Text(
-                            text = "하차",
+                            text = stringResource(R.string.alighting),
                             style = MaterialTheme.typography.labelSmall,
                             color = Color.White.copy(alpha = 0.4f)
                         )
@@ -252,7 +257,7 @@ fun HistoryCard(card: Card) {
             } else {
                 Spacer(modifier = Modifier.height(12.dp))
                 Text(
-                    text = "결제 수단: ${card.device ?: "단말기"}",
+                    text = stringResource(R.string.payment_method, if (card.deviceResId != 0) stringResource(card.deviceResId) else stringResource(R.string.unknown)),
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.White.copy(alpha = 0.6f)
                 )

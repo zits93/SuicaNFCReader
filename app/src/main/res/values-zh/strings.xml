@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Suica NFC 读取器</string>
+    <string name="top_screen">首页</string>
+    <string name="app_title">Suica 读取器</string>
+    <string name="scan_prompt">请扫描您的卡片</string>
+    <string name="nfc_off_prompt">请开启NFC并将卡片贴在手机背面</string>
+    <string name="history_count">%d条使用记录</string>
+    <string name="boarding">进站</string>
+    <string name="alighting">出站</string>
+    <string name="payment_method">支付方式: %s</string>
+    <string name="unknown">未知</string>
+    <string name="balance_symbol">¥</string>
+
+    <!-- Kinds -->
+    <string name="kind_shopping">零售/消费</string>
+    <string name="kind_bus">巴士</string>
+    <string name="kind_jr">JR</string>
+    <string name="kind_public_private">公营/私铁</string>
+
+    <!-- Devices -->
+    <string name="device_adjustment_machine">精算机/补票机</string>
+    <string name="device_mobile_terminal">便携式终端</string>
+    <string name="device_onboard_terminal">车载终端</string>
+    <string name="device_ticket_vending_machine">自动售票机</string>
+    <string name="device_deposit_machine">充值机</string>
+    <string name="device_ticket_gate">检票闸机</string>
+    <string name="device_simple_ticket_gate">简易检票机</string>
+    <string name="device_window_terminal">窗口终端</string>
+    <string name="device_mobile_phone">手机</string>
+    <string name="device_transfer_adjustment_machine">换乘补票机</string>
+    <string name="device_connection_ticket_gate">联络检票闸机</string>
+    <string name="device_simple_deposit_machine">简易充值机</string>
+    <string name="device_shopping_terminal">零售终端</string>
+    <string name="device_vending_machine">自动贩卖机</string>
+    <string name="device_view_altte">VIEW ALTTE</string>
+
+    <!-- Actions -->
+    <string name="action_fare_payment">支付运费(出站)</string>
+    <string name="action_charge">充值</string>
+    <string name="action_ticket_purchase">购票</string>
+    <string name="action_adjustment">补票/精算</string>
+    <string name="action_adjustment_in">补票(入站)</string>
+    <string name="action_window_processing">窗口处理</string>
+    <string name="action_new_issuance">新发行</string>
+    <string name="action_window_deduction">窗口扣款</string>
+    <string name="action_bus_pitapa">巴士(PiTaPa)</string>
+    <string name="action_bus_iruca">巴士(IruCa)</string>
+    <string name="action_reissuance">重新发行</string>
+    <string name="action_shinkansen">新干线支付</string>
+    <string name="action_auto_charge_in">入站自动充值</string>
+    <string name="action_auto_charge_out">出站自动充值</string>
+    <string name="action_bus_charge">巴士充值</string>
+    <string name="action_bus_plan_ticket">购买巴士企划票</string>
+    <string name="action_shopping">购物消费</string>
+    <string name="action_point_charge">积分充值</string>
+    <string name="action_register_deposit">收银台充值</string>
+    <string name="action_shopping_cancel">取消消费</string>
+    <string name="action_in_station_shopping">站内消费</string>
+    <string name="action_cash_shopping">现金购物(混合支付)</string>
+    <string name="action_in_station_cash_shopping">站内现金购物</string>
+    <string name="action_other_adjustment">补票(跨公司)</string>
+    <string name="action_other_in_station_adjustment">入站补票(跨公司)</string>
+
+    <string name="date_format">%1$d年%2$d月%3$d日</string>
+</resources>

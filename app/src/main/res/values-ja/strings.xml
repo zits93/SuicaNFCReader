@@ -1,0 +1,65 @@
+<resources>
+    <string name="app_name">Suica NFC Reader</string>
+    <string name="top_screen">トップ画面</string>
+    <string name="app_title">Suica Reader</string>
+    <string name="scan_prompt">カードをスキャンしてください</string>
+    <string name="nfc_off_prompt">NFCをオンにして、カードを端末の背面に当ててください</string>
+    <string name="history_count">%d件の利用履歴</string>
+    <string name="boarding">乗車</string>
+    <string name="alighting">降車</string>
+    <string name="payment_method">決済手段: %s</string>
+    <string name="unknown">不明</string>
+    <string name="balance_symbol">¥</string>
+
+    <!-- Kinds -->
+    <string name="kind_shopping">物販</string>
+    <string name="kind_bus">バス</string>
+    <string name="kind_jr">JR</string>
+    <string name="kind_public_private">公営/私鉄</string>
+
+    <!-- Devices -->
+    <string name="device_adjustment_machine">精算機</string>
+    <string name="device_mobile_terminal">携帯型端末</string>
+    <string name="device_onboard_terminal">車載端末</string>
+    <string name="device_ticket_vending_machine">券売機</string>
+    <string name="device_deposit_machine">入금機</string>
+    <string name="device_ticket_gate">改札機</string>
+    <string name="device_simple_ticket_gate">簡易改札機</string>
+    <string name="device_window_terminal">窓口端末</string>
+    <string name="device_mobile_phone">携帯電話</string>
+    <string name="device_transfer_adjustment_machine">乗継精算機</string>
+    <string name="device_connection_ticket_gate">連絡改札機</string>
+    <string name="device_simple_deposit_machine">簡易入金機</string>
+    <string name="device_shopping_terminal">物販端末</string>
+    <string name="device_vending_machine">自販機</string>
+    <string name="device_view_altte">VIEW ALTTE</string>
+
+    <!-- Actions -->
+    <string name="action_fare_payment">運賃支払(改札出場)</string>
+    <string name="action_charge">チャージ</string>
+    <string name="action_ticket_purchase">券購(磁気券購入)</string>
+    <string name="action_adjustment">精算</string>
+    <string name="action_adjustment_in">精算 (入場精算)</string>
+    <string name="action_window_processing">窓出 (改札窓口処理)</string>
+    <string name="action_new_issuance">新規 (新規発行)</string>
+    <string name="action_window_deduction">控除 (窓口控除)</string>
+    <string name="action_bus_pitapa">バス (PiTaPa系)</string>
+    <string name="action_bus_iruca">バス (IruCa系)</string>
+    <string name="action_reissuance">再発 (再発行処理)</string>
+    <string name="action_shinkansen">支払 (新幹線利用)</string>
+    <string name="action_auto_charge_in">入A (入場時オートチャージ)</string>
+    <string name="action_auto_charge_out">出A (出場時オートチャージ)</string>
+    <string name="action_bus_charge">入金 (バスチャージ)</string>
+    <string name="action_bus_plan_ticket">券購 (バス路面電車企画券購入)</string>
+    <string name="action_shopping">物販</string>
+    <string name="action_point_charge">特典 (特典チャージ)</string>
+    <string name="action_register_deposit">入金 (レジ入金)</string>
+    <string name="action_shopping_cancel">物販取消</string>
+    <string name="action_in_station_shopping">入物 (入場物販)</string>
+    <string name="action_cash_shopping">物現 (現金併用物販)</string>
+    <string name="action_in_station_cash_shopping">入物 (入場現金併用物販)</string>
+    <string name="action_other_adjustment">精算 (他社精算)</string>
+    <string name="action_other_in_station_adjustment">精算 (他社入場精算)</string>
+
+    <string name="date_format">%1$d年%2$d月%3$d日</string>
+</resources>

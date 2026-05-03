@@ -7,26 +7,34 @@ data class Card(
     var date: String? = null,
     var number: String? = null,
     var payment: String? = null,
-    var kind: String? = null,
-    var device: String? = null,
-    var action: String? = null,
+    var kindResId: Int = 0,
+    var deviceResId: Int = 0,
+    var actionResId: Int = 0,
     var inLine: String? = null,
     var inStation: String? = null,
     var outLine: String? = null,
     var outStation: String? = null,
     var balance: String? = null,
     var inCompany: String? = null,
-    var outCompany: String? = null
+    var outCompany: String? = null,
+    // Store raw values for date parts to format in UI if needed
+    var year: Int = 0,
+    var month: Int = 0,
+    var day: Int = 0
 ) {
     companion object {
         fun getCard(context: Context?, felica: SuicaReader): Card {
             val card = Card().apply {
-                date = "${2000 + felica.year}년 ${felica.month}월 ${felica.day}일"
+                year = 2000 + felica.year
+                month = felica.month
+                day = felica.day
+                // Date will be formatted in UI using resources
+                
                 number = felica.seqNo.toString()
                 payment = ""
-                kind = felica.kind
-                device = felica.device
-                action = felica.action
+                kindResId = felica.kindResId
+                deviceResId = felica.deviceResId
+                actionResId = felica.actionResId
 
                 // Retrieve station details safely
                 val inStationDetails = context?.let {

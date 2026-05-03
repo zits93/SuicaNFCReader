@@ -1,6 +1,6 @@
 package com.example.suicanfcreader.lib;
 
-import android.util.SparseArray;
+import com.example.suicanfcreader.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -12,7 +12,7 @@ public class SuicaReader {
     public int year;
     public int month;
     public int day;
-    public String kind;
+    public int kindResId;
     public int remain;
     public int seqNo;
     public int reasion;
@@ -21,11 +21,11 @@ public class SuicaReader {
     public int outStation;
     public int outLine;
 
-    public String device;
-    public String action;
+    public int deviceResId;
+    public int actionResId;
 
-    public static final SparseArray<String> DEVICE_LIST = new SparseArray<>();
-    public static final SparseArray<String> ACTION_LIST = new SparseArray<>();
+    public static final SparseArray<Integer> DEVICE_LIST = new SparseArray<>();
+    public static final SparseArray<Integer> ACTION_LIST = new SparseArray<>();
 
     public SuicaReader(){}
 
@@ -45,11 +45,11 @@ public class SuicaReader {
         this.day   = mixInt & 0x01f;
 
         if (isShopping(this.procId)) {
-            this.kind = "물판";
+            this.kindResId = R.string.kind_shopping;
         } else if (isBus(this.procId)) {
-            this.kind = "버스";
+            this.kindResId = R.string.kind_bus;
         } else {
-            this.kind = res[off+6] < 0x80 ? "JR" : "공영/사철" ;
+            this.kindResId = res[off+6] < 0x80 ? R.string.kind_jr : R.string.kind_public_private ;
         }
 
         this.inLine = toInt(res, off, 6);         // 6: 出線区
@@ -60,8 +60,8 @@ public class SuicaReader {
         this.seqNo   = toInt(res, off, 12,13,14); // 12-14: 連番
         this.reasion = res[off+15];               // 15: リージョン
 
-        this.device = DEVICE_LIST.get(this.termId);
-        this.action = ACTION_LIST.get(this.procId);
+        this.deviceResId = DEVICE_LIST.get(this.termId, R.string.unknown);
+        this.actionResId = ACTION_LIST.get(this.procId, R.string.unknown);
     }
 
     private int toInt(byte[] res, int off, int... idx) {
@@ -101,54 +101,54 @@ public class SuicaReader {
     }
 
     static {
-        DEVICE_LIST.put(3 , "정산기");
-        DEVICE_LIST.put(4 , "휴대형 단말");
-        DEVICE_LIST.put(5 , "차재 단말");
-        DEVICE_LIST.put(7 , "매표기");
-        DEVICE_LIST.put(8 , "매표기");
-        DEVICE_LIST.put(9 , "입금기");
-        DEVICE_LIST.put(18 , "매표기");
-        DEVICE_LIST.put(20 , "매표기 등");
-        DEVICE_LIST.put(21 , "매표기 등");
-        DEVICE_LIST.put(22 , "개찰기");
-        DEVICE_LIST.put(23 , "간이 개찰기");
-        DEVICE_LIST.put(24 , "창구 단말");
-        DEVICE_LIST.put(25 , "창구 단말");
-        DEVICE_LIST.put(26 , "개찰 단말");
-        DEVICE_LIST.put(27 , "휴대폰");
-        DEVICE_LIST.put(28 , "환승 정산기");
-        DEVICE_LIST.put(29 , "연락 개찰기");
-        DEVICE_LIST.put(31 , "간이 입금기");
-        DEVICE_LIST.put(70 , "VIEW ALTTE");
-        DEVICE_LIST.put(72 , "VIEW ALTTE");
-        DEVICE_LIST.put(199 , "물판 단말");
-        DEVICE_LIST.put(200 , "자판기");
+        DEVICE_LIST.put(3 , R.string.device_adjustment_machine);
+        DEVICE_LIST.put(4 , R.string.device_mobile_terminal);
+        DEVICE_LIST.put(5 , R.string.device_onboard_terminal);
+        DEVICE_LIST.put(7 , R.string.device_ticket_vending_machine);
+        DEVICE_LIST.put(8 , R.string.device_ticket_vending_machine);
+        DEVICE_LIST.put(9 , R.string.device_deposit_machine);
+        DEVICE_LIST.put(18 , R.string.device_ticket_vending_machine);
+        DEVICE_LIST.put(20 , R.string.device_ticket_vending_machine);
+        DEVICE_LIST.put(21 , R.string.device_ticket_vending_machine);
+        DEVICE_LIST.put(22 , R.string.device_ticket_gate);
+        DEVICE_LIST.put(23 , R.string.device_simple_ticket_gate);
+        DEVICE_LIST.put(24 , R.string.device_window_terminal);
+        DEVICE_LIST.put(25 , R.string.device_window_terminal);
+        DEVICE_LIST.put(26 , R.string.device_ticket_gate);
+        DEVICE_LIST.put(27 , R.string.device_mobile_phone);
+        DEVICE_LIST.put(28 , R.string.device_transfer_adjustment_machine);
+        DEVICE_LIST.put(29 , R.string.device_connection_ticket_gate);
+        DEVICE_LIST.put(31 , R.string.device_simple_deposit_machine);
+        DEVICE_LIST.put(70 , R.string.device_view_altte);
+        DEVICE_LIST.put(72 , R.string.device_view_altte);
+        DEVICE_LIST.put(199 , R.string.device_shopping_terminal);
+        DEVICE_LIST.put(200 , R.string.device_vending_machine);
 
-        ACTION_LIST.put(1 , "운임 지불(개찰 출장)");
-        ACTION_LIST.put(2 , "충전");
-        ACTION_LIST.put(3 , "권구(자기권 구입)");
-        ACTION_LIST.put(4 , "정산");
-        ACTION_LIST.put(5 , "정산 (입장 정산)");
-        ACTION_LIST.put(6 , "창출 (개찰 창구 처리)");
-        ACTION_LIST.put(7 , "신규 (신규 발행)");
-        ACTION_LIST.put(8 , "공제 (창구 공제)");
-        ACTION_LIST.put(13 , "버스 (PiTaPa계)");
-        ACTION_LIST.put(15 , "버스 (IruCa계)");
-        ACTION_LIST.put(17 , "재발 (재발행 처리)");
-        ACTION_LIST.put(19 , "지불 (신칸센 이용)");
-        ACTION_LIST.put(20 , "입A (입장 시 오토 차지)");
-        ACTION_LIST.put(21 , "출A (출장 시 오토 차지)");
-        ACTION_LIST.put(31 , "입금 (버스 충전)");
-        ACTION_LIST.put(35 , "권구 (버스 노면 전차 기획권 구입)");
-        ACTION_LIST.put(70 , "물판");
-        ACTION_LIST.put(72 , "특전 (특전 충전)");
-        ACTION_LIST.put(73 , "입금 (레지 입금)");
-        ACTION_LIST.put(74 , "물판 취소");
-        ACTION_LIST.put(75 , "입물 (입장 물판)");
-        ACTION_LIST.put(198 , "물현 (현금 병용 물판)");
-        ACTION_LIST.put(203 , "입물 (입장 현금 병용 물판)");
-        ACTION_LIST.put(132 , "정산 (타사 정산)");
-        ACTION_LIST.put(133 , "정산 (타사 입장 정산)");
+        ACTION_LIST.put(1 , R.string.action_fare_payment);
+        ACTION_LIST.put(2 , R.string.action_charge);
+        ACTION_LIST.put(3 , R.string.action_ticket_purchase);
+        ACTION_LIST.put(4 , R.string.action_adjustment);
+        ACTION_LIST.put(5 , R.string.action_adjustment_in);
+        ACTION_LIST.put(6 , R.string.action_window_processing);
+        ACTION_LIST.put(7 , R.string.action_new_issuance);
+        ACTION_LIST.put(8 , R.string.action_window_deduction);
+        ACTION_LIST.put(13 , R.string.action_bus_pitapa);
+        ACTION_LIST.put(15 , R.string.action_bus_iruca);
+        ACTION_LIST.put(17 , R.string.action_reissuance);
+        ACTION_LIST.put(19 , R.string.action_shinkansen);
+        ACTION_LIST.put(20 , R.string.action_auto_charge_in);
+        ACTION_LIST.put(21 , R.string.action_auto_charge_out);
+        ACTION_LIST.put(31 , R.string.action_bus_charge);
+        ACTION_LIST.put(35 , R.string.action_bus_plan_ticket);
+        ACTION_LIST.put(70 , R.string.action_shopping);
+        ACTION_LIST.put(72 , R.string.action_point_charge);
+        ACTION_LIST.put(73 , R.string.action_register_deposit);
+        ACTION_LIST.put(74 , R.string.action_shopping_cancel);
+        ACTION_LIST.put(75 , R.string.action_in_station_shopping);
+        ACTION_LIST.put(198 , R.string.action_cash_shopping);
+        ACTION_LIST.put(203 , R.string.action_in_station_cash_shopping);
+        ACTION_LIST.put(132 , R.string.action_other_adjustment);
+        ACTION_LIST.put(133 , R.string.action_other_in_station_adjustment);
     }
 
 }
