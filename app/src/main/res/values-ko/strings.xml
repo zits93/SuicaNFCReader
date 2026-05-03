@@ -10,9 +10,11 @@
     <string name="payment_method">결제 수단: %s</string>
     <string name="unknown">알 수 없음</string>
     <string name="balance_symbol">¥</string>
+    <string name="balance_label"> 잔액</string>
+
 
     <!-- Kinds -->
-    <string name="kind_shopping">물판</string>
+    <string name="kind_shopping">물건 구매</string>
     <string name="kind_bus">버스</string>
     <string name="kind_jr">JR</string>
     <string name="kind_public_private">공영/사철</string>

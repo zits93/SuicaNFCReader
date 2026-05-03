@@ -75,13 +75,68 @@ fun TopScreen(
         ) {
             Spacer(modifier = Modifier.height(60.dp))
 
-            Text(
-                text = stringResource(R.string.app_title),
-                style = MaterialTheme.typography.headlineLarge,
-                color = Color.White,
-                fontWeight = FontWeight.Bold,
-                letterSpacing = 2.sp
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    text = stringResource(R.string.app_title),
+                    style = MaterialTheme.typography.headlineLarge,
+                    color = Color.White,
+                    fontWeight = FontWeight.Bold,
+                    letterSpacing = 2.sp
+                )
+
+                var expanded by remember { mutableStateOf(false) }
+                val context = androidx.compose.ui.platform.LocalContext.current
+                Box {
+                    IconButton(onClick = { expanded = true }) {
+                        Icon(
+                            imageVector = Icons.Default.Language,
+                            contentDescription = "Change Language",
+                            tint = Color.White
+                        )
+                    }
+                    DropdownMenu(
+                        expanded = expanded,
+                        onDismissRequest = { expanded = false }
+                    ) {
+                        DropdownMenuItem(
+                            text = { Text("English") },
+                            onClick = { 
+                                expanded = false
+                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                    android.os.LocaleList.forLanguageTags("en")
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("한국어") },
+                            onClick = { 
+                                expanded = false
+                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                    android.os.LocaleList.forLanguageTags("ko")
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("日本語") },
+                            onClick = { 
+                                expanded = false
+                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                    android.os.LocaleList.forLanguageTags("ja")
+                            }
+                        )
+                        DropdownMenuItem(
+                            text = { Text("中文") },
+                            onClick = { 
+                                expanded = false
+                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                    android.os.LocaleList.forLanguageTags("zh")
+                            }
+                        )
+                    }
+                }
+            }
             
             Text(
                 text = if (nfcCards.isEmpty()) stringResource(R.string.scan_prompt) else stringResource(R.string.history_count, nfcCards.size),
@@ -198,12 +253,19 @@ fun HistoryCard(card: Card) {
                     }
                 }
                 
-                Text(
-                    text = "${stringResource(R.string.balance_symbol)}${card.balance}",
-                    style = MaterialTheme.typography.titleLarge,
-                    color = BalanceGold,
-                    fontWeight = FontWeight.ExtraBold
-                )
+                Column(horizontalAlignment = Alignment.End) {
+                    Text(
+                        text = "${stringResource(R.string.balance_symbol)}${card.balance}",
+                        style = MaterialTheme.typography.titleLarge,
+                        color = BalanceGold,
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                    Text(
+                        text = stringResource(R.string.balance_label),
+                        style = MaterialTheme.typography.labelSmall,
+                        color = Color.White.copy(alpha = 0.5f)
+                    )
+                }
             }
 
             if (card.kindResId != R.string.kind_shopping) {

@@ -10,6 +10,8 @@
     <string name="payment_method">決済手段: %s</string>
     <string name="unknown">不明</string>
     <string name="balance_symbol">¥</string>
+    <string name="balance_label"> 残高</string>
+
 
     <!-- Kinds -->
     <string name="kind_shopping">物販</string>

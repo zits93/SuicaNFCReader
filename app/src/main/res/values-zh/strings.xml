@@ -10,6 +10,8 @@
     <string name="payment_method">支付方式: %s</string>
     <string name="unknown">未知</string>
     <string name="balance_symbol">¥</string>
+    <string name="balance_label"> 余额</string>
+
 
     <!-- Kinds -->
     <string name="kind_shopping">零售/消费</string>

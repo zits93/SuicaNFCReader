@@ -10,6 +10,8 @@
     <string name="payment_method">Payment Method: %s</string>
     <string name="unknown">Unknown</string>
     <string name="balance_symbol">¥</string>
+    <string name="balance_label"> Balance</string>
+
 
     <!-- Kinds -->
     <string name="kind_shopping">Retail</string>
