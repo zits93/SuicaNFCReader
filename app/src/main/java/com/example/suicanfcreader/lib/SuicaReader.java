@@ -45,11 +45,11 @@ public class SuicaReader {
         this.day   = mixInt & 0x01f;
 
         if (isShopping(this.procId)) {
-            this.kind = "物販";
+            this.kind = "물판";
         } else if (isBus(this.procId)) {
-            this.kind = "バス";
+            this.kind = "버스";
         } else {
-            this.kind = res[off+6] < 0x80 ? "JR" : "公営/私鉄" ;
+            this.kind = res[off+6] < 0x80 ? "JR" : "공영/사철" ;
         }
 
         this.inLine = toInt(res, off, 6);         // 6: 出線区
@@ -101,54 +101,54 @@ public class SuicaReader {
     }
 
     static {
-        DEVICE_LIST.put(3 , "精算機");
-        DEVICE_LIST.put(4 , "携帯型端末");
-        DEVICE_LIST.put(5 , "車載端末");
-        DEVICE_LIST.put(7 , "券売機");
-        DEVICE_LIST.put(8 , "券売機");
-        DEVICE_LIST.put(9 , "入金機");
-        DEVICE_LIST.put(18 , "券売機");
-        DEVICE_LIST.put(20 , "券売機等");
-        DEVICE_LIST.put(21 , "券売機等");
-        DEVICE_LIST.put(22 , "改札機");
-        DEVICE_LIST.put(23 , "簡易改札機");
-        DEVICE_LIST.put(24 , "窓口端末");
-        DEVICE_LIST.put(25 , "窓口端末");
-        DEVICE_LIST.put(26 , "改札端末");
-        DEVICE_LIST.put(27 , "携帯電話");
-        DEVICE_LIST.put(28 , "乗継精算機");
-        DEVICE_LIST.put(29 , "連絡改札機");
-        DEVICE_LIST.put(31 , "簡易入金機");
+        DEVICE_LIST.put(3 , "정산기");
+        DEVICE_LIST.put(4 , "휴대형 단말");
+        DEVICE_LIST.put(5 , "차재 단말");
+        DEVICE_LIST.put(7 , "매표기");
+        DEVICE_LIST.put(8 , "매표기");
+        DEVICE_LIST.put(9 , "입금기");
+        DEVICE_LIST.put(18 , "매표기");
+        DEVICE_LIST.put(20 , "매표기 등");
+        DEVICE_LIST.put(21 , "매표기 등");
+        DEVICE_LIST.put(22 , "개찰기");
+        DEVICE_LIST.put(23 , "간이 개찰기");
+        DEVICE_LIST.put(24 , "창구 단말");
+        DEVICE_LIST.put(25 , "창구 단말");
+        DEVICE_LIST.put(26 , "개찰 단말");
+        DEVICE_LIST.put(27 , "휴대폰");
+        DEVICE_LIST.put(28 , "환승 정산기");
+        DEVICE_LIST.put(29 , "연락 개찰기");
+        DEVICE_LIST.put(31 , "간이 입금기");
         DEVICE_LIST.put(70 , "VIEW ALTTE");
         DEVICE_LIST.put(72 , "VIEW ALTTE");
-        DEVICE_LIST.put(199 , "物販端末");
-        DEVICE_LIST.put(200 , "自販機");
+        DEVICE_LIST.put(199 , "물판 단말");
+        DEVICE_LIST.put(200 , "자판기");
 
-        ACTION_LIST.put(1 , "運賃支払(改札出場)");
-        ACTION_LIST.put(2 , "チャージ");
-        ACTION_LIST.put(3 , "券購(磁気券購入)");
-        ACTION_LIST.put(4 , "精算");
-        ACTION_LIST.put(5 , "精算 (入場精算)");
-        ACTION_LIST.put(6 , "窓出 (改札窓口処理)");
-        ACTION_LIST.put(7 , "新規 (新規発行)");
-        ACTION_LIST.put(8 , "控除 (窓口控除)");
-        ACTION_LIST.put(13 , "バス (PiTaPa系)");
-        ACTION_LIST.put(15 , "バス (IruCa系)");
-        ACTION_LIST.put(17 , "再発 (再発行処理)");
-        ACTION_LIST.put(19 , "支払 (新幹線利用)");
-        ACTION_LIST.put(20 , "入A (入場時オートチャージ)");
-        ACTION_LIST.put(21 , "出A (出場時オートチャージ)");
-        ACTION_LIST.put(31 , "入金 (バスチャージ)");
-        ACTION_LIST.put(35 , "券購 (バス路面電車企画券購入)");
-        ACTION_LIST.put(70 , "物販");
-        ACTION_LIST.put(72 , "特典 (特典チャージ)");
-        ACTION_LIST.put(73 , "入金 (レジ入金)");
-        ACTION_LIST.put(74 , "物販取消");
-        ACTION_LIST.put(75 , "入物 (入場物販)");
-        ACTION_LIST.put(198 , "物現 (現金併用物販)");
-        ACTION_LIST.put(203 , "入物 (入場現金併用物販)");
-        ACTION_LIST.put(132 , "精算 (他社精算)");
-        ACTION_LIST.put(133 , "精算 (他社入場精算)");
+        ACTION_LIST.put(1 , "운임 지불(개찰 출장)");
+        ACTION_LIST.put(2 , "충전");
+        ACTION_LIST.put(3 , "권구(자기권 구입)");
+        ACTION_LIST.put(4 , "정산");
+        ACTION_LIST.put(5 , "정산 (입장 정산)");
+        ACTION_LIST.put(6 , "창출 (개찰 창구 처리)");
+        ACTION_LIST.put(7 , "신규 (신규 발행)");
+        ACTION_LIST.put(8 , "공제 (창구 공제)");
+        ACTION_LIST.put(13 , "버스 (PiTaPa계)");
+        ACTION_LIST.put(15 , "버스 (IruCa계)");
+        ACTION_LIST.put(17 , "재발 (재발행 처리)");
+        ACTION_LIST.put(19 , "지불 (신칸센 이용)");
+        ACTION_LIST.put(20 , "입A (입장 시 오토 차지)");
+        ACTION_LIST.put(21 , "출A (출장 시 오토 차지)");
+        ACTION_LIST.put(31 , "입금 (버스 충전)");
+        ACTION_LIST.put(35 , "권구 (버스 노면 전차 기획권 구입)");
+        ACTION_LIST.put(70 , "물판");
+        ACTION_LIST.put(72 , "특전 (특전 충전)");
+        ACTION_LIST.put(73 , "입금 (레지 입금)");
+        ACTION_LIST.put(74 , "물판 취소");
+        ACTION_LIST.put(75 , "입물 (입장 물판)");
+        ACTION_LIST.put(198 , "물현 (현금 병용 물판)");
+        ACTION_LIST.put(203 , "입물 (입장 현금 병용 물판)");
+        ACTION_LIST.put(132 , "정산 (타사 정산)");
+        ACTION_LIST.put(133 , "정산 (타사 입장 정산)");
     }
 
 }

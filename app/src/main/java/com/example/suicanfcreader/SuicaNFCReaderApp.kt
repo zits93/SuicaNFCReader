@@ -15,22 +15,12 @@ import com.example.suicanfcreader.viewModel.TopScreenViewModel
 fun SuicaNFCReaderApp(context: Context, viewModel: TopScreenViewModel) {
     SuicaNFCReaderTheme {
         val navController = rememberNavController()
-        val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
 
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    title = { Text("Suica NFC Reader") },
-                    scrollBehavior = scrollBehavior
-                )
-            },
-        ) { innerPadding ->
-            SuicaNFCReaderNavigation(
-                navController = navController,
-                context = context,
-                modifier = Modifier.padding(innerPadding),
-                viewModel
-            )
-        }
+        SuicaNFCReaderNavigation(
+            navController = navController,
+            context = context,
+            modifier = Modifier,
+            viewModel
+        )
     }
 }

@@ -21,7 +21,7 @@ data class Card(
     companion object {
         fun getCard(context: Context?, felica: SuicaReader): Card {
             val card = Card().apply {
-                date = "${2000 + felica.year}年${felica.month}月${felica.day}日"
+                date = "${2000 + felica.year}년 ${felica.month}월 ${felica.day}일"
                 number = felica.seqNo.toString()
                 payment = ""
                 kind = felica.kind

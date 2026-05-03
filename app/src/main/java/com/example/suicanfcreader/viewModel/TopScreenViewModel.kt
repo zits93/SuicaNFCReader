@@ -25,8 +25,8 @@ class TopScreenViewModel(
 ) : ViewModel() {
 
     private val nfcAdapter: NfcAdapter? = NfcAdapter.getDefaultAdapter(context)
-    private val _nfcData = MutableLiveData<String>()
-    val nfcData: LiveData<String> get() = _nfcData
+    private val _nfcCards = MutableLiveData<List<Card>>()
+    val nfcCards: LiveData<List<Card>> get() = _nfcCards
     private val _showNoNfcDialog = MutableLiveData<Boolean>()
     private val _isDataRefreshed = MutableLiveData<Boolean>()
     val isDataRefreshed: LiveData<Boolean> = _isDataRefreshed
@@ -71,8 +71,8 @@ class TopScreenViewModel(
                 val tag = it.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
                 tag?.let {
                     viewModelScope.launch {
-                        val data = readTagData(tag, context)
-                        _nfcData.postValue(data)
+                        val cards = readTagData(tag, context)
+                        _nfcCards.postValue(cards)
                         _isDataRefreshed.postValue(true)
                     }
                 }
@@ -80,8 +80,7 @@ class TopScreenViewModel(
         }
     }
 
-    private suspend fun readTagData(tag: Tag,context: Context): String = withContext(Dispatchers.IO) {
-        val sb = StringBuilder()
+    private suspend fun readTagData(tag: Tag,context: Context): List<Card> = withContext(Dispatchers.IO) {
         val id = tag.id
         try {
             val felica = NfcF.get(tag)
@@ -89,37 +88,25 @@ class TopScreenViewModel(
             val req = SuicaReader.readWithoutEncryption(id, 10)
             val res: ByteArray = felica.transceive(req)
             felica.close()
-            sb.append(fromData(res, context))
+            return@withContext fromData(res, context)
         } catch (e: Exception) {
-            sb.append("Error reading NFC tag: ${e.message}")
+            e.printStackTrace()
+            return@withContext emptyList()
         }
-        sb.toString()
     }
 
 
-    private fun fromData(data: ByteArray, context: Context):String {
-
+    private fun fromData(data: ByteArray, context: Context): List<Card> {
         val size: Int = data[12].toInt()
-        val sb = StringBuilder()
+        val cards = mutableListOf<Card>()
         for (i in 0 until size) {
             val felica = SuicaReader.parse(data, 13 + i * 16)
             val card: Card = Card.getCard(context, felica)
             if (i < size - 1) {
-
-                sb.appendLine("=== %02d ===".format(i))
-                sb.appendLine("端末種: %s".format(card.device?: ""))
-                sb.appendLine("処理: %s".format(card.kind?: ""))
-                sb.appendLine("日付:%s".format(card.date?: ""))
-                sb.appendLine("入線区: %s-%s".format(card.inCompany?: "", card.inLine?: ""))
-                sb.appendLine("入駅順: %s".format(card.inStation?: ""))
-                sb.appendLine("出線区: %s-%s".format(card.outCompany?: "", card.outCompany?: ""))
-                sb.appendLine("出駅順: %s".format(card.outStation?: ""))
-                sb.appendLine("残高: %s".format(card.balance?: ""))
-                sb.appendLine("BIN: ")
-                sb.appendLine(data.joinToString(" ") { "%02x".format(it) })
+                cards.add(card)
             }
         }
-        return sb.toString()
+        return cards
     }
 }
 

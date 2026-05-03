@@ -24,9 +24,9 @@ class MainActivity : ComponentActivity() {
         }
 
         lifecycleScope.launch {
-            topScreenViewModel.nfcData.observe(this@MainActivity) { data ->
-                // Handle the NFC data
-                println("NFC Data: $data")
+            topScreenViewModel.nfcCards.observe(this@MainActivity) { cards ->
+                // Handle the NFC cards
+                println("NFC Cards: ${cards.size}")
             }
         }
     }
