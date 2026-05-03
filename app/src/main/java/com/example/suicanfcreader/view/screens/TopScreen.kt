@@ -79,179 +79,178 @@ fun TopScreen(
                 )
                 .padding(padding)
         ) {
-        // Decorative Blurry Circles for Liquid Effect
-        Box(
-            modifier = Modifier
-                .offset(x = (-50).dp, y = (-50).dp)
-                .size(300.dp)
-                .blur(100.dp)
-                .background(SuicaGreen.copy(alpha = 0.2f), RoundedCornerShape(150.dp))
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.CenterEnd)
-                .offset(x = 100.dp, y = (-100).dp)
-                .size(250.dp)
-                .blur(120.dp)
-                .background(JRBlue.copy(alpha = 0.15f), RoundedCornerShape(125.dp))
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomStart)
-                .offset(x = (-80).dp, y = 80.dp)
-                .size(350.dp)
-                .blur(150.dp)
-                .background(Purple40.copy(alpha = 0.12f), RoundedCornerShape(175.dp))
-        )
-        Box(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .offset(x = 50.dp, y = 50.dp)
-                .size(300.dp)
-                .blur(100.dp)
-                .background(SuicaGreen.copy(alpha = 0.15f), RoundedCornerShape(150.dp))
-        )
-
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(horizontal = 20.dp)
-        ) {
-            Spacer(modifier = Modifier.height(60.dp))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(
-                    text = stringResource(R.string.app_title),
-                    style = MaterialTheme.typography.headlineLarge,
-                    color = Color.White,
-                    fontWeight = FontWeight.Bold,
-                    letterSpacing = 2.sp
-                )
-
-                var expanded by remember { mutableStateOf(false) }
-                val context = androidx.compose.ui.platform.LocalContext.current
-                Box {
-                    IconButton(onClick = { expanded = true }) {
-                        Icon(
-                            imageVector = Icons.Default.Language,
-                            contentDescription = "Change Language",
-                            tint = Color.White
-                        )
-                    }
-                    DropdownMenu(
-                        expanded = expanded,
-                        onDismissRequest = { expanded = false }
-                    ) {
-                        DropdownMenuItem(
-                            text = { Text("English") },
-                            onClick = { 
-                                expanded = false
-                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                    android.os.LocaleList.forLanguageTags("en")
-                                topScreenViewModel.refreshTranslations(context)
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("한국어") },
-                            onClick = { 
-                                expanded = false
-                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                    android.os.LocaleList.forLanguageTags("ko")
-                                topScreenViewModel.refreshTranslations(context)
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("日本語") },
-                            onClick = { 
-                                expanded = false
-                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                    android.os.LocaleList.forLanguageTags("ja")
-                                topScreenViewModel.refreshTranslations(context)
-                            }
-                        )
-                        DropdownMenuItem(
-                            text = { Text("中文") },
-                            onClick = { 
-                                expanded = false
-                                context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                    android.os.LocaleList.forLanguageTags("zh")
-                                topScreenViewModel.refreshTranslations(context)
-                            }
-                        )
-                    }
-                }
-            }
-            
-            Text(
-                text = if (nfcCards.isEmpty()) stringResource(R.string.scan_prompt) else stringResource(R.string.history_count, nfcCards.size),
-                style = MaterialTheme.typography.bodyMedium,
-                color = Color.White.copy(alpha = 0.7f)
+            // Decorative Blurry Circles for Liquid Effect
+            Box(
+                modifier = Modifier
+                    .offset(x = (-50).dp, y = (-50).dp)
+                    .size(300.dp)
+                    .blur(100.dp)
+                    .background(SuicaGreen.copy(alpha = 0.2f), RoundedCornerShape(150.dp))
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.CenterEnd)
+                    .offset(x = 100.dp, y = (-100).dp)
+                    .size(250.dp)
+                    .blur(120.dp)
+                    .background(JRBlue.copy(alpha = 0.15f), RoundedCornerShape(125.dp))
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomStart)
+                    .offset(x = (-80).dp, y = 80.dp)
+                    .size(350.dp)
+                    .blur(150.dp)
+                    .background(Purple40.copy(alpha = 0.12f), RoundedCornerShape(175.dp))
+            )
+            Box(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .offset(x = 50.dp, y = 50.dp)
+                    .size(300.dp)
+                    .blur(100.dp)
+                    .background(SuicaGreen.copy(alpha = 0.15f), RoundedCornerShape(150.dp))
             )
 
-            val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(false)
-            val context = androidx.compose.ui.platform.LocalContext.current
-            
-            AnimatedVisibility(visible = !isTranslatorReady && Locale.getDefault().language != "ja") {
-                Box(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 16.dp)
-                        .clip(RoundedCornerShape(20.dp))
-                        .background(SuicaGreen.copy(alpha = 0.15f))
-                        .border(1.dp, SuicaGreen.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
-                        .padding(16.dp)
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(horizontal = 20.dp)
+            ) {
+                Spacer(modifier = Modifier.height(60.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.fillMaxWidth()
-                    ) {
-                        Column(modifier = Modifier.weight(1f)) {
-                            Text(
-                                text = "Translation Kit Required",
-                                style = MaterialTheme.typography.titleSmall,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Text(
-                                text = "Download the AI model for offline translation.",
-                                style = MaterialTheme.typography.labelSmall,
-                                color = Color.White.copy(alpha = 0.7f)
+                    Text(
+                        text = stringResource(R.string.app_title),
+                        style = MaterialTheme.typography.headlineLarge,
+                        color = Color.White,
+                        fontWeight = FontWeight.Bold,
+                        letterSpacing = 2.sp
+                    )
+
+                    var expanded by remember { mutableStateOf(false) }
+                    Box {
+                        IconButton(onClick = { expanded = true }) {
+                            Icon(
+                                imageVector = Icons.Default.Language,
+                                contentDescription = "Change Language",
+                                tint = Color.White
                             )
                         }
-                        Button(
-                            onClick = { topScreenViewModel.downloadTranslationModel(context) },
-                            colors = ButtonDefaults.buttonColors(containerColor = SuicaGreen),
-                            shape = RoundedCornerShape(12.dp),
-                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+                        DropdownMenu(
+                            expanded = expanded,
+                            onDismissRequest = { expanded = false }
                         ) {
-                            Text("Download", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            DropdownMenuItem(
+                                text = { Text("English") },
+                                onClick = { 
+                                    expanded = false
+                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                        android.os.LocaleList.forLanguageTags("en")
+                                    topScreenViewModel.refreshTranslations(context)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("한국어") },
+                                onClick = { 
+                                    expanded = false
+                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                        android.os.LocaleList.forLanguageTags("ko")
+                                    topScreenViewModel.refreshTranslations(context)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("日本語") },
+                                onClick = { 
+                                    expanded = false
+                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                        android.os.LocaleList.forLanguageTags("ja")
+                                    topScreenViewModel.refreshTranslations(context)
+                                }
+                            )
+                            DropdownMenuItem(
+                                text = { Text("中文") },
+                                onClick = { 
+                                    expanded = false
+                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
+                                        android.os.LocaleList.forLanguageTags("zh")
+                                    topScreenViewModel.refreshTranslations(context)
+                                }
+                            )
                         }
                     }
                 }
-            }
+                
+                Text(
+                    text = if (nfcCards.isEmpty()) stringResource(R.string.scan_prompt) else stringResource(R.string.history_count, nfcCards.size),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.7f)
+                )
 
-            Spacer(modifier = Modifier.height(24.dp))
-
-            if (nfcCards.isEmpty()) {
-                EmptyStateView()
-            } else {
-                LazyColumn(
-                    modifier = Modifier.fillMaxSize(),
-                    verticalArrangement = Arrangement.spacedBy(16.dp),
-                    contentPadding = PaddingValues(bottom = 32.dp)
-                ) {
-                    itemsIndexed(nfcCards) { index, card ->
-                        AnimatedVisibility(
-                            visible = true,
-                            enter = fadeIn(animationSpec = tween(500, delayMillis = index * 100)) +
-                                    slideInVertically(initialOffsetY = { 50 }, animationSpec = tween(500, delayMillis = index * 100))
+                val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(false)
+                
+                AnimatedVisibility(visible = !isTranslatorReady && Locale.getDefault().language != "ja") {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 16.dp)
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(SuicaGreen.copy(alpha = 0.15f))
+                            .border(1.dp, SuicaGreen.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                            .padding(16.dp)
+                    ) {
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier = Modifier.fillMaxWidth()
                         ) {
-                            HistoryCard(card)
+                            Column(modifier = Modifier.weight(1f)) {
+                                Text(
+                                    text = "Translation Kit Required",
+                                    style = MaterialTheme.typography.titleSmall,
+                                    color = Color.White,
+                                    fontWeight = FontWeight.Bold
+                                )
+                                Text(
+                                    text = "Download the AI model for offline translation.",
+                                    style = MaterialTheme.typography.labelSmall,
+                                    color = Color.White.copy(alpha = 0.7f)
+                                )
+                            }
+                            Button(
+                                onClick = { topScreenViewModel.downloadTranslationModel(context) },
+                                colors = ButtonDefaults.buttonColors(containerColor = SuicaGreen),
+                                shape = RoundedCornerShape(12.dp),
+                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+                            ) {
+                                Text("Download", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                            }
+                        }
+                    }
+                }
+
+                Spacer(modifier = Modifier.height(24.dp))
+
+                if (nfcCards.isEmpty()) {
+                    EmptyStateView()
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(16.dp),
+                        contentPadding = PaddingValues(bottom = 32.dp)
+                    ) {
+                        itemsIndexed(nfcCards) { index, card ->
+                            AnimatedVisibility(
+                                visible = true,
+                                enter = fadeIn(animationSpec = tween(500, delayMillis = index * 100)) +
+                                        slideInVertically(initialOffsetY = { 50 }, animationSpec = tween(500, delayMillis = index * 100))
+                            ) {
+                                HistoryCard(card)
+                            }
                         }
                     }
                 }
