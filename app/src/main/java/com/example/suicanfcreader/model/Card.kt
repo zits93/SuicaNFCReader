@@ -23,7 +23,7 @@ data class Card(
     var day: Int = 0
 ) {
     companion object {
-        fun getCard(context: Context?, felica: SuicaReader): Card {
+        suspend fun getCard(context: Context?, felica: SuicaReader): Card {
             val card = Card().apply {
                 year = 2000 + felica.year
                 month = felica.month

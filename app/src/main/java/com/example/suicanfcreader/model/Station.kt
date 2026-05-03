@@ -14,6 +14,7 @@ data class Station(
 ) {
     companion object {
         private val stationCache = mutableMapOf<String, Station>()
+        private val stationCacheRaw = mutableMapOf<String, Station>()
         private var isLoaded = false
         private var translations: JSONObject? = null
 
@@ -64,6 +65,13 @@ data class Station(
                                 val rawLine = tokens[4]
                                 val rawStation = tokens[5]
 
+                                val rawStationObj = Station(
+                                    company = rawCompany,
+                                    lineName = rawLine,
+                                    stationName = rawStation
+                                )
+                                stationCacheRaw[key] = rawStationObj
+
                                 val station = Station(
                                     company = translate("companies", rawCompany),
                                     lineName = translate("lines", rawLine),
@@ -80,10 +88,28 @@ data class Station(
             }
         }
 
-        fun getStation(context: Context, lineCode: Int, stationCode: Int): Station {
+        suspend fun getStation(context: Context, lineCode: Int, stationCode: Int): Station {
             loadStations(context)
             val key = "$lineCode-$stationCode"
-            return stationCache[key] ?: Station(lineName = "-", stationName = "-", company = "-")
+            val station = stationCache[key] ?: Station(lineName = "-", stationName = "-", company = "-")
+            
+            // If the name is still the same as the raw one (not in JSON), try ML Kit translation
+            val lang = Locale.getDefault().language
+            if (lang != "ja" && station.stationName != "-") {
+                val rawStation = stationCacheRaw[key]
+                if (rawStation != null) {
+                    if (station.stationName == rawStation.stationName) {
+                        station.stationName = com.example.suicanfcreader.lib.StationTranslator.translate(station.stationName)
+                    }
+                    if (station.lineName == rawStation.lineName) {
+                        station.lineName = com.example.suicanfcreader.lib.StationTranslator.translate(station.lineName)
+                    }
+                    if (station.company == rawStation.company) {
+                        station.company = com.example.suicanfcreader.lib.StationTranslator.translate(station.company)
+                    }
+                }
+            }
+            return station
         }
     }
 }
