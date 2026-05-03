@@ -108,6 +108,7 @@ fun TopScreen(
                                 expanded = false
                                 context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
                                     android.os.LocaleList.forLanguageTags("en")
+                                topScreenViewModel.refreshTranslations(context)
                             }
                         )
                         DropdownMenuItem(
@@ -116,6 +117,7 @@ fun TopScreen(
                                 expanded = false
                                 context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
                                     android.os.LocaleList.forLanguageTags("ko")
+                                topScreenViewModel.refreshTranslations(context)
                             }
                         )
                         DropdownMenuItem(
@@ -124,6 +126,7 @@ fun TopScreen(
                                 expanded = false
                                 context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
                                     android.os.LocaleList.forLanguageTags("ja")
+                                topScreenViewModel.refreshTranslations(context)
                             }
                         )
                         DropdownMenuItem(
@@ -132,6 +135,7 @@ fun TopScreen(
                                 expanded = false
                                 context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
                                     android.os.LocaleList.forLanguageTags("zh")
+                                topScreenViewModel.refreshTranslations(context)
                             }
                         )
                     }

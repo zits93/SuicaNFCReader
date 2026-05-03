@@ -31,6 +31,17 @@ class TopScreenViewModel(
     private val _showNoNfcDialog = MutableLiveData<Boolean>()
     private val _isDataRefreshed = MutableLiveData<Boolean>()
     val isDataRefreshed: LiveData<Boolean> = _isDataRefreshed
+    
+    private var lastRawData: ByteArray? = null
+
+    fun refreshTranslations(context: Context) {
+        lastRawData?.let { data ->
+            viewModelScope.launch {
+                val cards = fromData(data, context)
+                _nfcCards.postValue(cards)
+            }
+        }
+    }
     fun enableNfcForegroundDispatch(activity: Activity) {
         nfcAdapter?.let { adapter ->
             if (adapter.isEnabled) {
@@ -64,6 +75,7 @@ class TopScreenViewModel(
             val req = SuicaReader.readWithoutEncryption(id, 10)
             val res: ByteArray = felica.transceive(req)
             felica.close()
+            lastRawData = res
             return@withContext fromData(res, context)
         } catch (e: Exception) {
             e.printStackTrace()

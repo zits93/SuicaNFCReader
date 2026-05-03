@@ -13,7 +13,7 @@ data class Station(
     var stationName: String = ""
 ) {
     companion object {
-        private val stationCache = mutableMapOf<String, Station>()
+        private val stationCache = mutableMapOf<String, MutableMap<String, Station>>()
         private val stationCacheRaw = mutableMapOf<String, Station>()
         private var isLoaded = false
         private var translations: JSONObject? = null
@@ -32,14 +32,13 @@ data class Station(
             }
         }
 
-        private fun translate(type: String, name: String): String {
+        private fun translate(type: String, name: String, lang: String): String {
             val trans = translations ?: return name
             if (!trans.has(type)) return name
             val items = trans.getJSONObject(type)
             if (!items.has(name)) return name
             
             val localized = items.getJSONObject(name)
-            val lang = Locale.getDefault().language
             return when {
                 lang == "ko" && localized.has("ko") -> localized.getString("ko")
                 (lang == "zh") && localized.has("zh") -> localized.getString("zh")
@@ -50,7 +49,6 @@ data class Station(
 
         private fun loadStations(context: Context) {
             if (isLoaded) return
-            loadTranslations(context)
             try {
                 context.assets.open("StationCode.csv").use { inputStream ->
                     BufferedReader(InputStreamReader(inputStream)).use { br ->
@@ -71,13 +69,6 @@ data class Station(
                                     stationName = rawStation
                                 )
                                 stationCacheRaw[key] = rawStationObj
-
-                                val station = Station(
-                                    company = translate("companies", rawCompany),
-                                    lineName = translate("lines", rawLine),
-                                    stationName = translate("stations", rawStation)
-                                )
-                                stationCache[key] = station
                             }
                         }
                     }
@@ -90,40 +81,53 @@ data class Station(
 
         suspend fun getStation(context: Context, lineCode: Int, stationCode: Int): Station {
             loadStations(context)
-            val key = "$lineCode-$stationCode"
-            val station = stationCache[key] ?: Station(lineName = "-", stationName = "-", company = "-")
+            loadTranslations(context)
             
-            // If the name is still the same as the raw one (not in JSON), try ML Kit translation
             val lang = Locale.getDefault().language
-            if (lang != "ja" && station.stationName != "-") {
-                val rawStation = stationCacheRaw[key]
-                if (rawStation != null) {
-                    if (station.stationName == rawStation.stationName) {
-                        val query = if (station.stationName.endsWith("駅")) station.stationName else station.stationName + "駅"
-                        val translated = com.example.suicanfcreader.lib.StationTranslator.translate(query)
-                        station.stationName = translated
-                            .replace("역", "")
-                            .replace(" Station", "", ignoreCase = true)
-                            .replace(" station", "", ignoreCase = true)
-                            .replace("站", "")
-                            .trim()
-                    }
-                    if (station.lineName == rawStation.lineName) {
-                        val query = if (station.lineName.endsWith("線")) station.lineName else station.lineName + "線"
-                        val translated = com.example.suicanfcreader.lib.StationTranslator.translate(query)
-                        station.lineName = translated
-                            .replace("선", "")
-                            .replace(" Line", "", ignoreCase = true)
-                            .replace(" line", "", ignoreCase = true)
-                            .replace("线", "")
-                            .trim()
-                    }
-                    if (station.company == rawStation.company) {
-                        station.company = com.example.suicanfcreader.lib.StationTranslator.translate(station.company)
-                    }
+            val key = "$lineCode-$stationCode"
+            
+            // Check language-specific cache
+            stationCache.getOrPut(lang) { mutableMapOf() }[key]?.let { return it }
+
+            val rawStation = stationCacheRaw[key] ?: return Station(lineName = "-", stationName = "-", company = "-")
+            
+            // 1. Try JSON Translation
+            var translatedStation = Station(
+                company = translate("companies", rawStation.company, lang),
+                lineName = translate("lines", rawStation.lineName, lang),
+                stationName = translate("stations", rawStation.stationName, lang)
+            )
+
+            // 2. Fallback to ML Kit if still in Japanese and not Japanese requested
+            if (lang != "ja") {
+                if (translatedStation.stationName == rawStation.stationName) {
+                    val query = if (rawStation.stationName.endsWith("駅")) rawStation.stationName else rawStation.stationName + "駅"
+                    val translated = com.example.suicanfcreader.lib.StationTranslator.translate(query)
+                    translatedStation.stationName = translated
+                        .replace("역", "")
+                        .replace(" Station", "", ignoreCase = true)
+                        .replace(" station", "", ignoreCase = true)
+                        .replace("站", "")
+                        .trim()
+                }
+                if (translatedStation.lineName == rawStation.lineName) {
+                    val query = if (rawStation.lineName.endsWith("線")) rawStation.lineName else rawStation.lineName + "線"
+                    val translated = com.example.suicanfcreader.lib.StationTranslator.translate(query)
+                    translatedStation.lineName = translated
+                        .replace("선", "")
+                        .replace(" Line", "", ignoreCase = true)
+                        .replace(" line", "", ignoreCase = true)
+                        .replace("线", "")
+                        .trim()
+                }
+                if (translatedStation.company == rawStation.company) {
+                    translatedStation.company = com.example.suicanfcreader.lib.StationTranslator.translate(rawStation.company)
                 }
             }
-            return station
+
+            // Cache the result for this language
+            stationCache[lang]!![key] = translatedStation
+            return translatedStation
         }
     }
 }
