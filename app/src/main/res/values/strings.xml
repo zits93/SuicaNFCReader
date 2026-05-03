@@ -17,8 +17,8 @@
     <string name="setup_ai_title">Setup AI Translation</string>
     <string name="setup_ai_desc">Enhance your experience with real-time station name translation in your language.</string>
     <string name="setup_ai_button">Get Started</string>
-    <string name="downloading_title">Downloading AI Model…</string>
-    <string name="downloading_desc">Please wait while we prepare your offline translation kit.</string>
+    <string name="downloading_title">Setting up AI Translation…</string>
+    <string name="downloading_desc">Downloading the official Google ML Translation Kit for real-time station names. This only happens once.</string>
     <string name="ready_to_scan">Ready to Scan</string>
     <string name="balance_label">Balance</string>
     <string name="balance_symbol">¥</string>

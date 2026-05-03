@@ -51,6 +51,13 @@ fun TopScreen(
     val context = androidx.compose.ui.platform.LocalContext.current
     val successMessage = stringResource(R.string.scan_success)
 
+    // Auto-download on start if not ready
+    LaunchedEffect(isTranslatorReady) {
+        if (!isTranslatorReady && Locale.getDefault().language != "ja" && !isDownloading) {
+            topScreenViewModel.downloadTranslationModel(context)
+        }
+    }
+
     LaunchedEffect(isDataRefreshed) {
         if (isDataRefreshed) {
             haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
@@ -142,42 +149,6 @@ fun TopScreen(
                     color = Color.White.copy(alpha = 0.7f)
                 )
 
-                AnimatedVisibility(visible = !isTranslatorReady && Locale.getDefault().language != "ja") {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(vertical = 16.dp)
-                            .clip(RoundedCornerShape(24.dp))
-                            .background(SuicaGreen.copy(alpha = 0.1f))
-                            .border(1.dp, SuicaGreen.copy(alpha = 0.2f), RoundedCornerShape(24.dp))
-                            .padding(20.dp)
-                    ) {
-                        Column {
-                            Text(
-                                text = stringResource(R.string.setup_ai_title),
-                                style = MaterialTheme.typography.titleMedium,
-                                color = Color.White,
-                                fontWeight = FontWeight.Bold
-                            )
-                            Spacer(modifier = Modifier.height(4.dp))
-                            Text(
-                                text = stringResource(R.string.setup_ai_desc),
-                                style = MaterialTheme.typography.bodySmall,
-                                color = Color.White.copy(alpha = 0.7f)
-                            )
-                            Spacer(modifier = Modifier.height(16.dp))
-                            Button(
-                                onClick = { topScreenViewModel.downloadTranslationModel(context) },
-                                modifier = Modifier.fillMaxWidth(),
-                                colors = ButtonDefaults.buttonColors(containerColor = SuicaGreen),
-                                shape = RoundedCornerShape(12.dp)
-                            ) {
-                                Text(stringResource(R.string.setup_ai_button), fontWeight = FontWeight.Bold)
-                            }
-                        }
-                    }
-                }
-
                 Spacer(modifier = Modifier.height(24.dp))
 
                 if (nfcCards.isEmpty()) {
@@ -204,27 +175,49 @@ fun TopScreen(
             // Full Screen Loading Overlay
             if (isDownloading) {
                 Box(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(Color.Black.copy(alpha = 0.7f))
-                        .blur(10.dp),
+                    modifier = Modifier.fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                        CircularProgressIndicator(color = SuicaGreen, strokeWidth = 4.dp)
-                        Spacer(modifier = Modifier.height(24.dp))
+                    // Background Blur Layer
+                    Box(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .background(Color.Black.copy(alpha = 0.8f))
+                            .blur(20.dp)
+                    )
+                    
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        modifier = Modifier.padding(32.dp)
+                    ) {
+                        CircularProgressIndicator(
+                            color = SuicaGreen, 
+                            strokeWidth = 4.dp,
+                            modifier = Modifier.size(48.dp)
+                        )
+                        Spacer(modifier = Modifier.height(32.dp))
                         Text(
                             text = stringResource(R.string.downloading_title),
-                            style = MaterialTheme.typography.titleMedium,
+                            style = MaterialTheme.typography.titleLarge,
                             color = Color.White,
-                            fontWeight = FontWeight.Bold
+                            fontWeight = FontWeight.Bold,
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
                         )
+                        Spacer(modifier = Modifier.height(12.dp))
                         Text(
                             text = stringResource(R.string.downloading_desc),
-                            style = MaterialTheme.typography.bodySmall,
-                            color = Color.White.copy(alpha = 0.6f),
-                            modifier = Modifier.padding(top = 8.dp)
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = Color.White.copy(alpha = 0.8f),
+                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                            lineHeight = 20.sp
                         )
+                        Spacer(modifier = Modifier.height(40.dp))
+                        TextButton(
+                            onClick = { topScreenViewModel.cancelDownloading() },
+                            colors = ButtonDefaults.textButtonColors(contentColor = Color.White.copy(alpha = 0.5f))
+                        ) {
+                            Text("Skip for now", textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline)
+                        }
                     }
                 }
             }

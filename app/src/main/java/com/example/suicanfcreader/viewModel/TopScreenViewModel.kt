@@ -50,6 +50,10 @@ class TopScreenViewModel(
         }
     }
 
+    fun cancelDownloading() {
+        _isDownloading.value = false
+    }
+
     fun downloadTranslationModel(context: Context) {
         viewModelScope.launch {
             _isDownloading.value = true
@@ -57,6 +61,8 @@ class TopScreenViewModel(
             if (success) {
                 _isTranslatorReady.value = true
                 refreshTranslations(context)
+            } else {
+                android.widget.Toast.makeText(context, "Failed to download translation model.", android.widget.Toast.LENGTH_SHORT).show()
             }
             _isDownloading.value = false
         }

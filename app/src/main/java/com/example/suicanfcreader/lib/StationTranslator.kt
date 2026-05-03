@@ -30,20 +30,33 @@ object StationTranslator {
         if (lang == "ja") return true
         
         val modelManager = RemoteModelManager.getInstance()
-        val model = TranslateRemoteModel.Builder(getTargetLanguageCode()).build()
-        return modelManager.isModelDownloaded(model).await()
+        val japaneseModel = TranslateRemoteModel.Builder(TranslateLanguage.JAPANESE).build()
+        val targetModel = TranslateRemoteModel.Builder(getTargetLanguageCode()).build()
+        
+        val isJapaneseDownloaded = modelManager.isModelDownloaded(japaneseModel).await()
+        val isTargetDownloaded = modelManager.isModelDownloaded(targetModel).await()
+        
+        return isJapaneseDownloaded && isTargetDownloaded
     }
 
-    suspend fun downloadModel(): Boolean {
+    suspend fun downloadModel(): Boolean = kotlinx.coroutines.withContext(kotlinx.coroutines.Dispatchers.IO) {
         val lang = Locale.getDefault().language
-        if (lang == "ja") return true
+        if (lang == "ja") return@withContext true
 
         val modelManager = RemoteModelManager.getInstance()
-        val model = TranslateRemoteModel.Builder(getTargetLanguageCode()).build()
-        val conditions = DownloadConditions.Builder().build()
+        val targetCode = getTargetLanguageCode()
         
-        return try {
-            modelManager.download(model, conditions).await()
+        val japaneseModel = TranslateRemoteModel.Builder(TranslateLanguage.JAPANESE).build()
+        val targetModel = TranslateRemoteModel.Builder(targetCode).build()
+        
+        val conditions = DownloadConditions.Builder()
+            .build()
+        
+        try {
+            // Download Japanese first (required as source)
+            modelManager.download(japaneseModel, conditions).await()
+            // Then target language
+            modelManager.download(targetModel, conditions).await()
             true
         } catch (e: Exception) {
             e.printStackTrace()
