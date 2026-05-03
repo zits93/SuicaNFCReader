@@ -5,8 +5,8 @@
     <string name="scan_prompt">Please scan your card</string>
     <string name="nfc_off_prompt">Please turn on NFC and touch the card to the back</string>
     <string name="history_count">%d History Items</string>
-    <string name="boarding">Boarding</string>
-    <string name="alighting">Alighting</string>
+    <string name="boarding">Departure</string>
+    <string name="alighting">Arrival</string>
     <string name="payment_method">Payment Method: %s</string>
     <string name="unknown">Unknown</string>
     <string name="balance_symbol">¥</string>

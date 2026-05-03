@@ -32,7 +32,7 @@
     <string name="device_transfer_adjustment_machine">환승 정산기</string>
     <string name="device_connection_ticket_gate">연락 개찰기</string>
     <string name="device_simple_deposit_machine">간이 입금기</string>
-    <string name="device_shopping_terminal">물판 단말</string>
+    <string name="device_shopping_terminal">결제 단말기</string>
     <string name="device_vending_machine">자판기</string>
     <string name="device_view_altte">VIEW ALTTE</string>
 
@@ -53,13 +53,13 @@
     <string name="action_auto_charge_out">출A (출장 시 오토 차지)</string>
     <string name="action_bus_charge">입금 (버스 충전)</string>
     <string name="action_bus_plan_ticket">권구 (버스 노면 전차 기획권 구입)</string>
-    <string name="action_shopping">물판</string>
+    <string name="action_shopping">물건 구매</string>
     <string name="action_point_charge">특전 (특전 충전)</string>
     <string name="action_register_deposit">입금 (레지 입금)</string>
-    <string name="action_shopping_cancel">물판 취소</string>
-    <string name="action_in_station_shopping">입물 (입장 물판)</string>
-    <string name="action_cash_shopping">물현 (현금 병용 물판)</string>
-    <string name="action_in_station_cash_shopping">입물 (입장 현금 병용 물판)</string>
+    <string name="action_shopping_cancel">구매 취소</string>
+    <string name="action_in_station_shopping">역내 구매 (입장 구매)</string>
+    <string name="action_cash_shopping">구매 (현금 복합 결제)</string>
+    <string name="action_in_station_cash_shopping">역내 구매 (현금 복합 결제)</string>
     <string name="action_other_adjustment">정산 (타사 정산)</string>
     <string name="action_other_in_station_adjustment">정산 (타사 입장 정산)</string>
 
