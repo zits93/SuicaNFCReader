@@ -61,11 +61,27 @@ fun TopScreen(
         )
         Box(
             modifier = Modifier
+                .align(Alignment.CenterEnd)
+                .offset(x = 100.dp, y = (-100).dp)
+                .size(250.dp)
+                .blur(120.dp)
+                .background(JRBlue.copy(alpha = 0.15f), RoundedCornerShape(125.dp))
+        )
+        Box(
+            modifier = Modifier
+                .align(Alignment.BottomStart)
+                .offset(x = (-80).dp, y = 80.dp)
+                .size(350.dp)
+                .blur(150.dp)
+                .background(Purple40.copy(alpha = 0.12f), RoundedCornerShape(175.dp))
+        )
+        Box(
+            modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .offset(x = 50.dp, y = 50.dp)
                 .size(300.dp)
                 .blur(100.dp)
-                .background(JRBlue.copy(alpha = 0.2f), RoundedCornerShape(150.dp))
+                .background(SuicaGreen.copy(alpha = 0.15f), RoundedCornerShape(150.dp))
         )
 
         Column(
@@ -148,6 +164,49 @@ fun TopScreen(
                 color = Color.White.copy(alpha = 0.7f)
             )
 
+            val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(false)
+            val context = androidx.compose.ui.platform.LocalContext.current
+            
+            AnimatedVisibility(visible = !isTranslatorReady && Locale.getDefault().language != "ja") {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(vertical = 16.dp)
+                        .clip(RoundedCornerShape(20.dp))
+                        .background(SuicaGreen.copy(alpha = 0.15f))
+                        .border(1.dp, SuicaGreen.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
+                        .padding(16.dp)
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.fillMaxWidth()
+                    ) {
+                        Column(modifier = Modifier.weight(1f)) {
+                            Text(
+                                text = "Translation Kit Required",
+                                style = MaterialTheme.typography.titleSmall,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Text(
+                                text = "Download the AI model for offline translation.",
+                                style = MaterialTheme.typography.labelSmall,
+                                color = Color.White.copy(alpha = 0.7f)
+                            )
+                        }
+                        Button(
+                            onClick = { topScreenViewModel.downloadTranslationModel(context) },
+                            colors = ButtonDefaults.buttonColors(containerColor = SuicaGreen),
+                            shape = RoundedCornerShape(12.dp),
+                            contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+                        ) {
+                            Text("Download", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                        }
+                    }
+                }
+            }
+
             Spacer(modifier = Modifier.height(24.dp))
 
             if (nfcCards.isEmpty()) {
@@ -178,21 +237,42 @@ fun EmptyStateView() {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .padding(bottom = 100.dp),
+            .padding(bottom = 50.dp),
         contentAlignment = Alignment.Center
     ) {
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            Icon(
-                imageVector = Icons.Default.Nfc,
-                contentDescription = null,
-                modifier = Modifier.size(80.dp),
-                tint = Color.White.copy(alpha = 0.3f)
-            )
-            Spacer(modifier = Modifier.height(16.dp))
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(contentAlignment = Alignment.Center) {
+                // Subtle glow behind icon
+                Box(
+                    modifier = Modifier
+                        .size(140.dp)
+                        .blur(40.dp)
+                        .background(SuicaGreen.copy(alpha = 0.15f), RoundedCornerShape(70.dp))
+                )
+                Icon(
+                    imageVector = Icons.Default.Nfc,
+                    contentDescription = null,
+                    modifier = Modifier.size(100.dp),
+                    tint = Color.White.copy(alpha = 0.8f)
+                )
+            }
+            Spacer(modifier = Modifier.height(32.dp))
             Text(
-                text = stringResource(R.string.nfc_off_prompt),
-                style = MaterialTheme.typography.bodyLarge,
-                color = Color.White.copy(alpha = 0.5f)
+                text = "Ready to Scan",
+                style = MaterialTheme.typography.headlineSmall,
+                color = Color.White,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            Text(
+                text = stringResource(R.string.scan_prompt),
+                style = MaterialTheme.typography.bodyMedium,
+                color = Color.White.copy(alpha = 0.5f),
+                textAlign = androidx.compose.ui.text.style.TextAlign.Center,
+                modifier = Modifier.padding(horizontal = 40.dp)
             )
         }
     }
@@ -215,10 +295,10 @@ fun HistoryCard(card: Card) {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .clip(RoundedCornerShape(24.dp))
+            .clip(RoundedCornerShape(28.dp))
             .background(GlassWhite)
-            .border(1.dp, GlassBorder, RoundedCornerShape(24.dp))
-            .padding(20.dp)
+            .border(1.dp, GlassBorder, RoundedCornerShape(28.dp))
+            .padding(24.dp)
     ) {
         Column {
             Row(
@@ -229,19 +309,19 @@ fun HistoryCard(card: Card) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Box(
                         modifier = Modifier
-                            .size(40.dp)
-                            .clip(RoundedCornerShape(12.dp))
-                            .background(typeColor.copy(alpha = 0.2f)),
+                            .size(48.dp)
+                            .clip(RoundedCornerShape(16.dp))
+                            .background(typeColor.copy(alpha = 0.15f)),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
                             imageVector = icon,
                             contentDescription = null,
                             tint = typeColor,
-                            modifier = Modifier.size(24.dp)
+                            modifier = Modifier.size(28.dp)
                         )
                     }
-                    Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.width(16.dp))
                     Column {
                         Text(
                             text = if (card.kindResId != 0) stringResource(card.kindResId) else stringResource(R.string.unknown),
@@ -251,19 +331,28 @@ fun HistoryCard(card: Card) {
                         )
                         Text(
                             text = stringResource(R.string.date_format, card.year, card.month, card.day),
-                            style = MaterialTheme.typography.bodySmall,
+                            style = MaterialTheme.typography.labelSmall,
                             color = Color.White.copy(alpha = 0.5f)
                         )
                     }
                 }
-                
+
                 Column(horizontalAlignment = Alignment.End) {
-                    Text(
-                        text = "${stringResource(R.string.balance_symbol)}${card.balance}",
-                        style = MaterialTheme.typography.titleLarge,
-                        color = BalanceGold,
-                        fontWeight = FontWeight.ExtraBold
-                    )
+                    Row(verticalAlignment = Alignment.Bottom) {
+                        Text(
+                            text = stringResource(R.string.balance_symbol),
+                            style = MaterialTheme.typography.bodyMedium,
+                            color = SuicaGreen,
+                            modifier = Modifier.padding(bottom = 2.dp, end = 2.dp),
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = card.balance ?: "0",
+                            style = MaterialTheme.typography.headlineMedium,
+                            color = Color.White,
+                            fontWeight = FontWeight.ExtraBold
+                        )
+                    }
                     Text(
                         text = stringResource(R.string.balance_label),
                         style = MaterialTheme.typography.labelSmall,
@@ -272,57 +361,41 @@ fun HistoryCard(card: Card) {
                 }
             }
 
-            if (card.kindResId != R.string.kind_shopping) {
-                Spacer(modifier = Modifier.height(16.dp))
-                
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    Column(modifier = Modifier.weight(1f)) {
-                        Text(
-                            text = stringResource(R.string.boarding),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.4f)
-                        )
-                        Text(
-                            text = card.inStation ?: "-",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                            text = card.inCompany ?: "",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.6f)
-                        )
-                    }
-                    
+            if (card.inStation != null && card.inStation != "-") {
+                Spacer(modifier = Modifier.height(20.dp))
+                HorizontalDivider(color = Color.White.copy(alpha = 0.1f), thickness = 1.dp)
+                Spacer(modifier = Modifier.height(20.dp))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    StationInfo(
+                        label = stringResource(R.string.boarding),
+                        line = card.inLine ?: "-",
+                        station = card.inStation ?: "-",
+                        company = card.inCompany ?: "-",
+                        alignEnd = false
+                    )
+
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = null,
                         tint = Color.White.copy(alpha = 0.3f),
-                        modifier = Modifier.padding(horizontal = 8.dp)
+                        modifier = Modifier.size(20.dp)
                     )
 
-                    Column(modifier = Modifier.weight(1f), horizontalAlignment = Alignment.End) {
-                        Text(
-                            text = stringResource(R.string.alighting),
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.4f)
-                        )
-                        Text(
-                            text = card.outStation ?: "-",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White,
-                            fontWeight = FontWeight.Medium
-                        )
-                        Text(
-                            text = card.outCompany ?: "",
-                            style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.6f)
-                        )
-                    }
+                    StationInfo(
+                        label = stringResource(R.string.alighting),
+                        line = card.outLine ?: "-",
+                        station = card.outStation ?: "-",
+                        company = card.outCompany ?: "-",
+                        alignEnd = true
+                    )
                 }
-            } else {
-                Spacer(modifier = Modifier.height(12.dp))
+            } else if (card.kindResId == R.string.kind_shopping) {
+                Spacer(modifier = Modifier.height(16.dp))
                 Text(
                     text = stringResource(R.string.payment_method, if (card.deviceResId != 0) stringResource(card.deviceResId) else stringResource(R.string.unknown)),
                     style = MaterialTheme.typography.bodySmall,
@@ -330,5 +403,28 @@ fun HistoryCard(card: Card) {
                 )
             }
         }
+    }
+}
+
+@Composable
+fun StationInfo(label: String, line: String, station: String, company: String, alignEnd: Boolean) {
+    Column(horizontalAlignment = if (alignEnd) Alignment.End else Alignment.Start) {
+        Text(
+            text = label,
+            style = MaterialTheme.typography.labelSmall,
+            color = Color.White.copy(alpha = 0.5f)
+        )
+        Text(
+            text = station,
+            style = MaterialTheme.typography.titleMedium,
+            color = Color.White,
+            fontWeight = FontWeight.Bold
+        )
+        Text(
+            text = if (company.isNotEmpty()) "$company $line" else line,
+            style = MaterialTheme.typography.labelSmall,
+            color = Color.White.copy(alpha = 0.4f),
+            maxLines = 1
+        )
     }
 }

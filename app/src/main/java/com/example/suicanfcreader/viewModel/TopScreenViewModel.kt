@@ -34,6 +34,29 @@ class TopScreenViewModel(
     
     private var lastRawData: ByteArray? = null
 
+    private val _isTranslatorReady = MutableLiveData<Boolean>(false)
+    val isTranslatorReady: LiveData<Boolean> = _isTranslatorReady
+
+    init {
+        checkTranslatorStatus()
+    }
+
+    fun checkTranslatorStatus() {
+        viewModelScope.launch {
+            _isTranslatorReady.value = com.example.suicanfcreader.lib.StationTranslator.isModelDownloaded()
+        }
+    }
+
+    fun downloadTranslationModel(context: Context) {
+        viewModelScope.launch {
+            val success = com.example.suicanfcreader.lib.StationTranslator.downloadModel()
+            if (success) {
+                _isTranslatorReady.value = true
+                refreshTranslations(context)
+            }
+        }
+    }
+
     fun refreshTranslations(context: Context) {
         lastRawData?.let { data ->
             viewModelScope.launch {

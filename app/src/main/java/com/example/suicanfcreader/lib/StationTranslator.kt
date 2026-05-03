@@ -1,7 +1,10 @@
 package com.example.suicanfcreader.lib
 
+import com.example.suicanfcreader.lib.StationTranslator.getTargetLanguageCode
 import com.google.mlkit.common.model.DownloadConditions
+import com.google.mlkit.common.model.RemoteModelManager
 import com.google.mlkit.nl.translate.TranslateLanguage
+import com.google.mlkit.nl.translate.TranslateRemoteModel
 import com.google.mlkit.nl.translate.Translation
 import com.google.mlkit.nl.translate.Translator
 import com.google.mlkit.nl.translate.TranslatorOptions
@@ -12,16 +15,47 @@ object StationTranslator {
     private var translator: Translator? = null
     private var currentTargetLang: String = ""
 
-    suspend fun translate(text: String): String {
+    fun getTargetLanguageCode(): String {
         val lang = Locale.getDefault().language
-        if (lang == "ja") return text // No translation needed for Japanese
-        
-        val targetLangCode = when (lang) {
+        return when (lang) {
             "ko" -> TranslateLanguage.KOREAN
             "zh" -> TranslateLanguage.CHINESE
             "en" -> TranslateLanguage.ENGLISH
             else -> TranslateLanguage.ENGLISH
         }
+    }
+
+    suspend fun isModelDownloaded(): Boolean {
+        val lang = Locale.getDefault().language
+        if (lang == "ja") return true
+        
+        val modelManager = RemoteModelManager.getInstance()
+        val model = TranslateRemoteModel.Builder(getTargetLanguageCode()).build()
+        return modelManager.isModelDownloaded(model).await()
+    }
+
+    suspend fun downloadModel(): Boolean {
+        val lang = Locale.getDefault().language
+        if (lang == "ja") return true
+
+        val modelManager = RemoteModelManager.getInstance()
+        val model = TranslateRemoteModel.Builder(getTargetLanguageCode()).build()
+        val conditions = DownloadConditions.Builder().build()
+        
+        return try {
+            modelManager.download(model, conditions).await()
+            true
+        } catch (e: Exception) {
+            e.printStackTrace()
+            false
+        }
+    }
+
+    suspend fun translate(text: String): String {
+        val lang = Locale.getDefault().language
+        if (lang == "ja") return text 
+        
+        val targetLangCode = getTargetLanguageCode()
 
         if (translator == null || currentTargetLang != targetLangCode) {
             translator?.close()
@@ -33,13 +67,9 @@ object StationTranslator {
             translator = Translation.getClient(options)
         }
 
-        val conditions = DownloadConditions.Builder().build()
         try {
-            // Ensure model is downloaded
-            translator?.downloadModelIfNeeded(conditions)?.await()
             return translator?.translate(text)?.await() ?: text
         } catch (e: Exception) {
-            e.printStackTrace()
             return text
         }
     }
