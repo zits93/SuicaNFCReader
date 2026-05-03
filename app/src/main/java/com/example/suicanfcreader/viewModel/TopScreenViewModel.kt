@@ -37,6 +37,9 @@ class TopScreenViewModel(
     private val _isTranslatorReady = MutableLiveData<Boolean>(false)
     val isTranslatorReady: LiveData<Boolean> = _isTranslatorReady
 
+    private val _isDownloading = MutableLiveData<Boolean>(false)
+    val isDownloading: LiveData<Boolean> = _isDownloading
+
     init {
         checkTranslatorStatus()
     }
@@ -49,11 +52,13 @@ class TopScreenViewModel(
 
     fun downloadTranslationModel(context: Context) {
         viewModelScope.launch {
+            _isDownloading.value = true
             val success = com.example.suicanfcreader.lib.StationTranslator.downloadModel()
             if (success) {
                 _isTranslatorReady.value = true
                 refreshTranslations(context)
             }
+            _isDownloading.value = false
         }
     }
 

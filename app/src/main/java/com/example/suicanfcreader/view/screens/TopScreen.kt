@@ -43,6 +43,9 @@ fun TopScreen(
 ) {
     val nfcCards by topScreenViewModel.nfcCards.observeAsState(emptyList())
     val isDataRefreshed by topScreenViewModel.isDataRefreshed.observeAsState(false)
+    val isDownloading by topScreenViewModel.isDownloading.observeAsState(false)
+    val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(false)
+    
     val snackbarHostState = remember { SnackbarHostState() }
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
     val context = androidx.compose.ui.platform.LocalContext.current
@@ -79,7 +82,7 @@ fun TopScreen(
                 )
                 .padding(padding)
         ) {
-            // Decorative Blurry Circles for Liquid Effect
+            // Background Elements... (kept same)
             Box(
                 modifier = Modifier
                     .offset(x = (-50).dp, y = (-50).dp)
@@ -131,58 +134,6 @@ fun TopScreen(
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 2.sp
                     )
-
-                    var expanded by remember { mutableStateOf(false) }
-                    Box {
-                        IconButton(onClick = { expanded = true }) {
-                            Icon(
-                                imageVector = Icons.Default.Language,
-                                contentDescription = "Change Language",
-                                tint = Color.White
-                            )
-                        }
-                        DropdownMenu(
-                            expanded = expanded,
-                            onDismissRequest = { expanded = false }
-                        ) {
-                            DropdownMenuItem(
-                                text = { Text("English") },
-                                onClick = { 
-                                    expanded = false
-                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                        android.os.LocaleList.forLanguageTags("en")
-                                    topScreenViewModel.refreshTranslations(context)
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("한국어") },
-                                onClick = { 
-                                    expanded = false
-                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                        android.os.LocaleList.forLanguageTags("ko")
-                                    topScreenViewModel.refreshTranslations(context)
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("日本語") },
-                                onClick = { 
-                                    expanded = false
-                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                        android.os.LocaleList.forLanguageTags("ja")
-                                    topScreenViewModel.refreshTranslations(context)
-                                }
-                            )
-                            DropdownMenuItem(
-                                text = { Text("中文") },
-                                onClick = { 
-                                    expanded = false
-                                    context.getSystemService(android.app.LocaleManager::class.java).applicationLocales = 
-                                        android.os.LocaleList.forLanguageTags("zh")
-                                    topScreenViewModel.refreshTranslations(context)
-                                }
-                            )
-                        }
-                    }
                 }
                 
                 Text(
@@ -191,43 +142,37 @@ fun TopScreen(
                     color = Color.White.copy(alpha = 0.7f)
                 )
 
-                val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(false)
-                
                 AnimatedVisibility(visible = !isTranslatorReady && Locale.getDefault().language != "ja") {
                     Box(
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 16.dp)
-                            .clip(RoundedCornerShape(20.dp))
-                            .background(SuicaGreen.copy(alpha = 0.15f))
-                            .border(1.dp, SuicaGreen.copy(alpha = 0.3f), RoundedCornerShape(20.dp))
-                            .padding(16.dp)
+                            .clip(RoundedCornerShape(24.dp))
+                            .background(SuicaGreen.copy(alpha = 0.1f))
+                            .border(1.dp, SuicaGreen.copy(alpha = 0.2f), RoundedCornerShape(24.dp))
+                            .padding(20.dp)
                     ) {
-                        Row(
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            modifier = Modifier.fillMaxWidth()
-                        ) {
-                            Column(modifier = Modifier.weight(1f)) {
-                                Text(
-                                    text = "Translation Kit Required",
-                                    style = MaterialTheme.typography.titleSmall,
-                                    color = Color.White,
-                                    fontWeight = FontWeight.Bold
-                                )
-                                Text(
-                                    text = "Download the AI model for offline translation.",
-                                    style = MaterialTheme.typography.labelSmall,
-                                    color = Color.White.copy(alpha = 0.7f)
-                                )
-                            }
+                        Column {
+                            Text(
+                                text = "Setup AI Translation",
+                                style = MaterialTheme.typography.titleMedium,
+                                color = Color.White,
+                                fontWeight = FontWeight.Bold
+                            )
+                            Spacer(modifier = Modifier.height(4.dp))
+                            Text(
+                                text = "Enhance your experience with real-time station name translation in your language.",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = Color.White.copy(alpha = 0.7f)
+                            )
+                            Spacer(modifier = Modifier.height(16.dp))
                             Button(
                                 onClick = { topScreenViewModel.downloadTranslationModel(context) },
+                                modifier = Modifier.fillMaxWidth(),
                                 colors = ButtonDefaults.buttonColors(containerColor = SuicaGreen),
-                                shape = RoundedCornerShape(12.dp),
-                                contentPadding = PaddingValues(horizontal = 12.dp, vertical = 0.dp)
+                                shape = RoundedCornerShape(12.dp)
                             ) {
-                                Text("Download", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                                Text("Get Started", fontWeight = FontWeight.Bold)
                             }
                         }
                     }
@@ -252,6 +197,34 @@ fun TopScreen(
                                 HistoryCard(card)
                             }
                         }
+                    }
+                }
+            }
+
+            // Full Screen Loading Overlay
+            if (isDownloading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(Color.Black.copy(alpha = 0.7f))
+                        .blur(10.dp),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        CircularProgressIndicator(color = SuicaGreen, strokeWidth = 4.dp)
+                        Spacer(modifier = Modifier.height(24.dp))
+                        Text(
+                            text = "Downloading AI Model...",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = Color.White,
+                            fontWeight = FontWeight.Bold
+                        )
+                        Text(
+                            text = "Please wait while we prepare your offline translation kit.",
+                            style = MaterialTheme.typography.bodySmall,
+                            color = Color.White.copy(alpha = 0.6f),
+                            modifier = Modifier.padding(top = 8.dp)
+                        )
                     }
                 }
             }
