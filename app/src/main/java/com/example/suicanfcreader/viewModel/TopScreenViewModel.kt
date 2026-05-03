@@ -4,6 +4,7 @@ import android.app.Activity
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import androidx.core.content.IntentCompat
 import android.content.IntentFilter
 import android.nfc.NfcAdapter
 import android.nfc.Tag
@@ -68,7 +69,7 @@ class TopScreenViewModel(
                     NfcAdapter.ACTION_NDEF_DISCOVERED
                 )
             ) {
-                val tag = it.getParcelableExtra<Tag>(NfcAdapter.EXTRA_TAG)
+                val tag = IntentCompat.getParcelableExtra(it, NfcAdapter.EXTRA_TAG, Tag::class.java)
                 tag?.let {
                     viewModelScope.launch {
                         val cards = readTagData(tag, context)

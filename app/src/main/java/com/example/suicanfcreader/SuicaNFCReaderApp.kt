@@ -18,9 +18,7 @@ fun SuicaNFCReaderApp(context: Context, viewModel: TopScreenViewModel) {
 
         SuicaNFCReaderNavigation(
             navController = navController,
-            context = context,
-            modifier = Modifier,
-            viewModel
+            viewModel = viewModel
         )
     }
 }

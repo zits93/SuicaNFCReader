@@ -1,5 +1,6 @@
 package com.example.suicanfcreader.lib;
 
+import android.util.SparseArray;
 import com.example.suicanfcreader.R;
 
 import java.io.ByteArrayOutputStream;

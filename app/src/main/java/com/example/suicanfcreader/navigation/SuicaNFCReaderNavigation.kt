@@ -18,8 +18,6 @@ import com.example.suicanfcreader.viewModel.TopScreenViewModelFactory
 @Composable
 fun SuicaNFCReaderNavigation(
     navController: NavHostController,
-    context: Context,
-    modifier: Modifier,
     viewModel: TopScreenViewModel
 ) {
     NavHost(

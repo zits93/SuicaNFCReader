@@ -15,6 +15,7 @@ import androidx.compose.material.icons.filled.*
 import androidx.compose.material.icons.filled.DirectionsBus
 import androidx.compose.material.icons.filled.Nfc
 import androidx.compose.material.icons.filled.Train
+import androidx.compose.material.icons.automirrored.filled.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -229,7 +230,7 @@ fun HistoryCard(card: Card) {
                     }
                     
                     Icon(
-                        imageVector = Icons.Default.ArrowForward,
+                        imageVector = Icons.AutoMirrored.Filled.ArrowForward,
                         contentDescription = null,
                         tint = Color.White.copy(alpha = 0.3f),
                         modifier = Modifier.padding(horizontal = 8.dp)
