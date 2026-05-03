@@ -72,7 +72,7 @@ class TopScreenViewModel(
     }
 
 
-    private fun fromData(data: ByteArray, context: Context): List<Card> {
+    private suspend fun fromData(data: ByteArray, context: Context): List<Card> {
         val size: Int = data[12].toInt()
         val cards = mutableListOf<Card>()
         for (i in 0 until size) {
