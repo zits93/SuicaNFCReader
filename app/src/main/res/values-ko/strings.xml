@@ -26,6 +26,9 @@
     <string name="supported_cards_desc">Suica, PASMO, ICOCA 등 일본의 주요 교통 IC 카드를 지원합니다.</string>
     <string name="kind_public_private">공영/사철</string>
 
+    <string name="download_translation_prompt">오프라인 번역 모델을 다운로드하시겠습니까? (Wi-Fi 권장)</string>
+    <string name="download">다운로드</string>
+
     <!-- Devices -->
     <string name="device_adjustment_machine">정산기</string>
     <string name="device_mobile_terminal">휴대형 단말</string>

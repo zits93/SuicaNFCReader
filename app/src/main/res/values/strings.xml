@@ -26,6 +26,9 @@
     <string name="supported_cards_desc">This app supports major Japanese IC cards including Suica, PASMO, and ICOCA.</string>
     <string name="kind_public_private">Public/Private</string>
 
+    <string name="download_translation_prompt">Download offline translation model? (Wi-Fi recommended)</string>
+    <string name="download">Download</string>
+
     <!-- Devices -->
     <string name="device_adjustment_machine">Adjustment Machine</string>
     <string name="device_mobile_terminal">Mobile Terminal</string>

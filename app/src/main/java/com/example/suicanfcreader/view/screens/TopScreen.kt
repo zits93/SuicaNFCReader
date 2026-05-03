@@ -52,10 +52,26 @@ fun TopScreen(
     val context = androidx.compose.ui.platform.LocalContext.current
     val successMessage = stringResource(R.string.scan_success)
 
-    // Auto-download on start if not ready
+    val showDownloadPrompt = remember { mutableStateOf(false) }
+
+    // Prompt for download on start if not ready
     LaunchedEffect(isTranslatorReady) {
         if (!isTranslatorReady && Locale.getDefault().language != "ja" && !isDownloading) {
-            topScreenViewModel.downloadTranslationModel(context)
+            showDownloadPrompt.value = true
+        }
+    }
+
+    LaunchedEffect(showDownloadPrompt.value) {
+        if (showDownloadPrompt.value) {
+            val result = snackbarHostState.showSnackbar(
+                message = context.getString(R.string.download_translation_prompt),
+                actionLabel = context.getString(R.string.download),
+                duration = SnackbarDuration.Indefinite
+            )
+            if (result == SnackbarResult.ActionPerformed) {
+                topScreenViewModel.downloadTranslationModel(context)
+            }
+            showDownloadPrompt.value = false
         }
     }
 
@@ -136,6 +152,16 @@ fun TopScreen(
                     .padding(horizontal = 20.dp)
             ) {
                 Spacer(modifier = Modifier.height(60.dp))
+                
+                if (isDownloading) {
+                    LinearProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(bottom = 16.dp),
+                        color = SuicaGreen,
+                        trackColor = Color.White.copy(alpha = 0.2f)
+                    )
+                }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -158,7 +184,7 @@ fun TopScreen(
                     ) {
                         Icon(
                             imageVector = Icons.Default.Info,
-                            contentDescription = "Supported Cards",
+                            contentDescription = stringResource(R.string.supported_cards_title),
                             tint = Color.White
                         )
                     }
@@ -190,54 +216,7 @@ fun TopScreen(
                 }
             }
 
-            // Full Screen Loading Overlay
-            if (isDownloading) {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    // Semi-transparent background
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .background(Color.Black.copy(alpha = 0.8f))
-                    )
-                    
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(32.dp)
-                    ) {
-                        CircularProgressIndicator(
-                            color = SuicaGreen, 
-                            strokeWidth = 4.dp,
-                            modifier = Modifier.size(48.dp)
-                        )
-                        Spacer(modifier = Modifier.height(32.dp))
-                        Text(
-                            text = stringResource(R.string.downloading_title),
-                            style = MaterialTheme.typography.titleLarge,
-                            color = Color.White,
-                            fontWeight = FontWeight.Bold,
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center
-                        )
-                        Spacer(modifier = Modifier.height(12.dp))
-                        Text(
-                            text = stringResource(R.string.downloading_desc),
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = Color.White.copy(alpha = 0.8f),
-                            textAlign = androidx.compose.ui.text.style.TextAlign.Center,
-                            lineHeight = 20.sp
-                        )
-                        Spacer(modifier = Modifier.height(40.dp))
-                        TextButton(
-                            onClick = { topScreenViewModel.cancelDownloading() },
-                            colors = ButtonDefaults.textButtonColors(contentColor = Color.White.copy(alpha = 0.5f))
-                        ) {
-                            Text("Skip for now", textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline)
-                        }
-                    }
-                }
-            }
+            // Full Screen Loading Overlay Removed for UX
         }
     }
 
@@ -356,7 +335,7 @@ fun EmptyStateView() {
             Text(
                 text = stringResource(R.string.scan_prompt),
                 style = MaterialTheme.typography.bodyMedium,
-                color = Color.White.copy(alpha = 0.5f),
+                color = Color.White.copy(alpha = 0.7f),
                 textAlign = androidx.compose.ui.text.style.TextAlign.Center,
                 modifier = Modifier.padding(horizontal = 40.dp)
             )
@@ -418,7 +397,7 @@ fun HistoryCard(card: Card) {
                         Text(
                             text = stringResource(R.string.date_format, card.year, card.month, card.day),
                             style = MaterialTheme.typography.labelSmall,
-                            color = Color.White.copy(alpha = 0.5f)
+                            color = Color.White.copy(alpha = 0.7f)
                         )
                     }
                 }
@@ -442,7 +421,7 @@ fun HistoryCard(card: Card) {
                     Text(
                         text = stringResource(R.string.balance_label),
                         style = MaterialTheme.typography.labelSmall,
-                        color = Color.White.copy(alpha = 0.5f)
+                        color = Color.White.copy(alpha = 0.7f)
                     )
                 }
             }
@@ -485,7 +464,7 @@ fun HistoryCard(card: Card) {
                 Text(
                     text = stringResource(R.string.payment_method, if (card.deviceResId != 0) stringResource(card.deviceResId) else stringResource(R.string.unknown)),
                     style = MaterialTheme.typography.bodySmall,
-                    color = Color.White.copy(alpha = 0.6f)
+                    color = Color.White.copy(alpha = 0.7f)
                 )
             }
         }
@@ -498,19 +477,22 @@ fun StationInfo(label: String, line: String, station: String, company: String, a
         Text(
             text = label,
             style = MaterialTheme.typography.labelSmall,
-            color = Color.White.copy(alpha = 0.5f)
+            color = Color.White.copy(alpha = 0.7f)
         )
         Text(
             text = station,
             style = MaterialTheme.typography.titleMedium,
             color = Color.White,
-            fontWeight = FontWeight.Bold
+            fontWeight = FontWeight.Bold,
+            maxLines = 1,
+            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
         )
         Text(
             text = if (company.isNotEmpty()) "$company $line" else line,
             style = MaterialTheme.typography.labelSmall,
-            color = Color.White.copy(alpha = 0.4f),
-            maxLines = 1
+            color = Color.White.copy(alpha = 0.7f),
+            maxLines = 1,
+            overflow = androidx.compose.ui.text.style.TextOverflow.Ellipsis
         )
     }
 }
