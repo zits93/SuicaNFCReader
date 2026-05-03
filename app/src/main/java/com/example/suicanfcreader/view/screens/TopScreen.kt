@@ -45,6 +45,7 @@ fun TopScreen(
     val isDataRefreshed by topScreenViewModel.isDataRefreshed.observeAsState(false)
     val isDownloading by topScreenViewModel.isDownloading.observeAsState(false)
     val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(false)
+    var showInfoSheet by remember { mutableStateOf(false) }
     
     val snackbarHostState = remember { SnackbarHostState() }
     val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
@@ -89,37 +90,50 @@ fun TopScreen(
                 )
                 .padding(padding)
         ) {
-            // Background Elements... (kept same)
+            // Optimized Background Elements (Glow effect without heavy blur)
             Box(
                 modifier = Modifier
                     .offset(x = (-50).dp, y = (-50).dp)
                     .size(300.dp)
-                    .blur(100.dp)
-                    .background(SuicaGreen.copy(alpha = 0.2f), RoundedCornerShape(150.dp))
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(SuicaGreen.copy(alpha = 0.15f), Color.Transparent),
+                            center = androidx.compose.ui.geometry.Offset(150f, 150f)
+                        )
+                    )
             )
             Box(
                 modifier = Modifier
                     .align(Alignment.CenterEnd)
                     .offset(x = 100.dp, y = (-100).dp)
                     .size(250.dp)
-                    .blur(120.dp)
-                    .background(JRBlue.copy(alpha = 0.15f), RoundedCornerShape(125.dp))
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(JRBlue.copy(alpha = 0.12f), Color.Transparent)
+                        )
+                    )
             )
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomStart)
                     .offset(x = (-80).dp, y = 80.dp)
                     .size(350.dp)
-                    .blur(150.dp)
-                    .background(Purple40.copy(alpha = 0.12f), RoundedCornerShape(175.dp))
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(Purple40.copy(alpha = 0.1f), Color.Transparent)
+                        )
+                    )
             )
             Box(
                 modifier = Modifier
                     .align(Alignment.BottomEnd)
                     .offset(x = 50.dp, y = 50.dp)
                     .size(300.dp)
-                    .blur(100.dp)
-                    .background(SuicaGreen.copy(alpha = 0.15f), RoundedCornerShape(150.dp))
+                    .background(
+                        Brush.radialGradient(
+                            colors = listOf(SuicaGreen.copy(alpha = 0.12f), Color.Transparent)
+                        )
+                    )
             )
 
             Column(
@@ -141,6 +155,19 @@ fun TopScreen(
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 2.sp
                     )
+                    
+                    IconButton(
+                        onClick = { showInfoSheet = true },
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(12.dp))
+                            .background(Color.White.copy(alpha = 0.1f))
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Info,
+                            contentDescription = "Supported Cards",
+                            tint = Color.White
+                        )
+                    }
                 }
                 
                 Text(
@@ -159,11 +186,14 @@ fun TopScreen(
                         verticalArrangement = Arrangement.spacedBy(16.dp),
                         contentPadding = PaddingValues(bottom = 32.dp)
                     ) {
-                        itemsIndexed(nfcCards) { index, card ->
+                        items(
+                            items = nfcCards,
+                            key = { it.number ?: it.hashCode() }
+                        ) { card ->
                             AnimatedVisibility(
                                 visible = true,
-                                enter = fadeIn(animationSpec = tween(500, delayMillis = index * 100)) +
-                                        slideInVertically(initialOffsetY = { 50 }, animationSpec = tween(500, delayMillis = index * 100))
+                                enter = fadeIn(animationSpec = tween(400)) +
+                                        slideInVertically(initialOffsetY = { 30 }, animationSpec = tween(400))
                             ) {
                                 HistoryCard(card)
                             }
@@ -217,6 +247,78 @@ fun TopScreen(
                             colors = ButtonDefaults.textButtonColors(contentColor = Color.White.copy(alpha = 0.5f))
                         ) {
                             Text("Skip for now", textDecoration = androidx.compose.ui.text.style.TextDecoration.Underline)
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    if (showInfoSheet) {
+        ModalBottomSheet(
+            onDismissRequest = { showInfoSheet = false },
+            containerColor = Color(0xFF1A1C1E),
+            contentColor = Color.White,
+            dragHandle = { BottomSheetDefaults.DragHandle(color = Color.White.copy(alpha = 0.2f)) },
+            shape = RoundedCornerShape(topStart = 32.dp, topEnd = 32.dp)
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 24.dp)
+                    .padding(bottom = 40.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.supported_cards_title),
+                    style = MaterialTheme.typography.headlineSmall,
+                    fontWeight = FontWeight.Bold
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(R.string.supported_cards_desc),
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.White.copy(alpha = 0.6f)
+                )
+                Spacer(modifier = Modifier.height(24.dp))
+                
+                val cards = listOf(
+                    "Suica" to SuicaGreen,
+                    "PASMO" to ShoppingOrange,
+                    "ICOCA" to JRBlue,
+                    "TOICA" to Color(0xFFFDD835),
+                    "SUGOCA" to Color(0xFFE53935),
+                    "Kitaca" to Color(0xFF8BC34A),
+                    "manaca" to Color(0xFFFB8C00),
+                    "nimoca" to Color(0xFF03A9F4),
+                    "hayakaken" to Color(0xFF00ACC1),
+                    "PiTaPa" to Color(0xFF9575CD)
+                )
+                
+                LazyColumn(
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    items(cards) { (name, color) ->
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .clip(RoundedCornerShape(16.dp))
+                                .background(Color.White.copy(alpha = 0.05f))
+                                .padding(16.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Box(
+                                modifier = Modifier
+                                    .size(12.dp)
+                                    .clip(RoundedCornerShape(6.dp))
+                                    .background(color)
+                            )
+                            Spacer(modifier = Modifier.width(16.dp))
+                            Text(
+                                text = name,
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.SemiBold
+                            )
                         }
                     }
                 }

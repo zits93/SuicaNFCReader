@@ -22,6 +22,8 @@
     <string name="ready_to_scan">Ready to Scan</string>
     <string name="balance_label">Balance</string>
     <string name="balance_symbol">¥</string>
+    <string name="supported_cards_title">Supported Cards</string>
+    <string name="supported_cards_desc">This app supports major Japanese IC cards including Suica, PASMO, and ICOCA.</string>
     <string name="kind_public_private">Public/Private</string>
 
     <!-- Devices -->

@@ -22,6 +22,8 @@
     <string name="ready_to_scan">스캔 준비 완료</string>
     <string name="balance_label">잔액</string>
     <string name="balance_symbol">¥</string>
+    <string name="supported_cards_title">지원되는 카드</string>
+    <string name="supported_cards_desc">Suica, PASMO, ICOCA 등 일본의 주요 교통 IC 카드를 지원합니다.</string>
     <string name="kind_public_private">공영/사철</string>
 
     <!-- Devices -->
