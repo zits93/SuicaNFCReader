@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Suica NFC Reader</string>
+    <string name="app_name">日本交通ICカードリーダー</string>
     <string name="top_screen">トップ画面</string>
-    <string name="app_title">Suica Reader</string>
+    <string name="app_title">日本交通ICカードリーダー</string>
     <string name="scan_prompt">カードをスキャンしてください</string>
     <string name="nfc_off_prompt">NFCをオンにして、カードを端末の背面に当ててください</string>
     <string name="history_count">%d件の利用履歴</string>

@@ -82,6 +82,10 @@ class TopScreenViewModel(
         nfcAdapter?.disableReaderMode(activity)
     }
 
+    fun resetDataRefreshed() {
+        _isDataRefreshed.postValue(false)
+    }
+
     fun handleTag(tag: Tag, context: Context) {
         viewModelScope.launch {
             val cards = readTagData(tag, context)

@@ -1,7 +1,7 @@
 <resources>
-    <string name="app_name">Suica NFC 读取器</string>
-    <string name="top_screen">首页</string>
-    <string name="app_title">Suica 读取器</string>
+    <string name="app_name">日本交通IC卡读取器</string>
+    <string name="top_screen">主页</string>
+    <string name="app_title">日本交通IC卡读取器</string>
     <string name="scan_prompt">请扫描您的卡片</string>
     <string name="nfc_off_prompt">请开启NFC并将卡片贴在手机背面</string>
     <string name="history_count">%d条使用记录</string>

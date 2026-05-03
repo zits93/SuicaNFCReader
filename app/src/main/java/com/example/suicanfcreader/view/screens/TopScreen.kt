@@ -41,16 +41,43 @@ fun TopScreen(
     topScreenViewModel: TopScreenViewModel
 ) {
     val nfcCards by topScreenViewModel.nfcCards.observeAsState(emptyList())
+    val isDataRefreshed by topScreenViewModel.isDataRefreshed.observeAsState(false)
+    val snackbarHostState = remember { SnackbarHostState() }
+    val haptic = androidx.compose.ui.platform.LocalHapticFeedback.current
+    val context = androidx.compose.ui.platform.LocalContext.current
+    val successMessage = stringResource(R.string.scan_success)
 
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(BackgroundGradientStart, BackgroundGradientEnd)
+    LaunchedEffect(isDataRefreshed) {
+        if (isDataRefreshed) {
+            haptic.performHapticFeedback(androidx.compose.ui.hapticfeedback.HapticFeedbackType.LongPress)
+            snackbarHostState.showSnackbar(successMessage)
+            topScreenViewModel.resetDataRefreshed()
+        }
+    }
+
+    Scaffold(
+        containerColor = Color.Transparent,
+        snackbarHost = { 
+            SnackbarHost(snackbarHostState) { data ->
+                Snackbar(
+                    containerColor = SuicaGreen,
+                    contentColor = Color.White,
+                    shape = RoundedCornerShape(16.dp),
+                    snackbarData = data
                 )
-            )
-    ) {
+            }
+        }
+    ) { padding ->
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    brush = Brush.verticalGradient(
+                        colors = listOf(BackgroundGradientStart, BackgroundGradientEnd)
+                    )
+                )
+                .padding(padding)
+        ) {
         // Decorative Blurry Circles for Liquid Effect
         Box(
             modifier = Modifier

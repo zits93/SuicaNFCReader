@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Suica NFC 리더</string>
+    <string name="app_name">일본 교통카드 리더</string>
     <string name="top_screen">탑 스크린</string>
-    <string name="app_title">Suica 리더</string>
+    <string name="app_title">일본 교통카드 리더</string>
     <string name="scan_prompt">카드를 스캔해주세요</string>
+    <string name="scan_success">스캔 성공!</string>
     <string name="nfc_off_prompt">NFC를 켜고 카드를 기기 뒷면에 대주세요</string>
     <string name="history_count">%d개의 이용 내역</string>
     <string name="boarding">승차</string>

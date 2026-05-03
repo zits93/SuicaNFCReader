@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">Suica NFC Reader</string>
+    <string name="app_name">Japan IC Reader</string>
     <string name="top_screen">Top Screen</string>
-    <string name="app_title">Suica Reader</string>
+    <string name="app_title">Japan IC Reader</string>
     <string name="scan_prompt">Please scan your card</string>
+    <string name="scan_success">Scan Successful!</string>
     <string name="nfc_off_prompt">Please turn on NFC and touch the card to the back</string>
     <string name="history_count">%d History Items</string>
     <string name="boarding">Departure</string>
