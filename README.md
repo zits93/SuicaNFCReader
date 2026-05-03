@@ -1,71 +1,70 @@
-# Suica and Pasmo Reader
+# 🚅 Japan IC Reader (日本交通ICカードリーダー)
 
-This Android application is designed to read and display data from Japan’s popular transportation NFC cards, Suica and Pasmo. The app provides a way to see the raw data from the cards.
-<a href="https://drive.google.com/file/d/1FMq20dVy2ZySrnmD79NkmVe5Y5b4ib7A/view?usp=drive_link">Download latest APK version HERE</a>
-## Features
+<p align="center">
+  <img src="https://raw.githubusercontent.com/zits93/SuicaNFCReader/main/app/src/main/res/mipmap-xxxhdpi/ic_launcher_round.png" width="128" height="128" alt="App Icon">
+</p>
 
-<ul class="feature-list">
-  <li>Read and display raw data from Suica and Pasmo NFC cards.</li>
-  <li>User-friendly interface for easy data visualization.</li>
-  <li>Secure and private handling of card data.</li>
-</ul>
+**Japan IC Reader** is a premium, high-performance Android application designed for travelers and residents in Japan. It allows you to instantly read and visualize data from various Japanese transit IC cards (Suica, PASMO, ICOCA, and more) with a stunning modern interface and AI-powered translation.
 
-## Requirements
+---
 
-<ul class="feature-list">
-  <li>Android Studio</li>
-  <li>Android device with NFC capability</li>
-  <li>Minimum Android SDK version 21 (Lollipop)</li>
-</ul>
+## ✨ Key Features
 
-## Installation
+- **🌐 AI-Powered Translation**: Utilizes Google ML Kit's on-device NMT (Neural Machine Translation) to translate thousands of Japanese station and line names into your language (English, Korean, Chinese) in real-time.
+- **💎 Premium Design**: A state-of-the-art UI featuring liquid mesh gradients, glassmorphism effects, and smooth animations.
+- **💳 Universal Support**: Works with all major FeliCa-based IC cards including Suica, PASMO, ICOCA, TOICA, SUGOCA, and more.
+- **📊 Detailed History**: View your recent transaction history, including boarding/alighting stations, dates, and balance.
+- **📳 Haptic Feedback**: Instant physical feedback upon successful card scans for a seamless user experience.
+- **🌍 Multi-language UI**: Full localization for English, Korean, Japanese, and Chinese.
 
-1. Clone the repository:
+---
 
-    <div class="code-block">
-    <pre><code>git clone https://github.com/l0rded/SuicaNFCReader.git</code></pre>
-    </div>
+## 📸 Preview
 
-2. Open the project in Android Studio.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/zits93/SuicaNFCReader/main/docs/preview_main.png" width="300" alt="Main Screen">
+  <img src="https://raw.githubusercontent.com/zits93/SuicaNFCReader/main/docs/preview_history.png" width="300" alt="History Screen">
+</p>
 
-3. Sync the project with Gradle files.
+---
 
-4. Build and run the project on an NFC-capable Android device.
+## 🛠 Tech Stack
 
-## Usage
+- **UI**: Jetpack Compose (Modern Declarative UI)
+- **AI**: Google ML Kit (On-device Translation)
+- **NFC**: Android NFC (FeliCa / NFC-F)
+- **Architecture**: MVVM with LiveData & Coroutines
+- **Build**: Kotlin DSL (build.gradle.kts) & Version Catalog
 
-1. Open the app on your Android device.
+---
 
-2. Place your Suica or Pasmo card near the NFC sensor on your device.
+## 📥 Installation
 
-3. The app will automatically detect and read the card data.
+1. Download the latest APK from the [Releases](https://github.com/zits93/SuicaNFCReader/releases) page.
+2. Install the APK on your NFC-capable Android device.
+3. Open the app and tap the "Download" button on the translation banner to setup the offline AI kit.
+4. Touch your IC card to the back of your phone!
 
-4. View the raw data displayed on the screen.
+---
 
-## Contributing
+## 🤝 Contributing
 
-1. Fork the repository.
+Contributions are always welcome! Feel free to open an issue or submit a pull request if you have any ideas or bug fixes.
 
-2. Create a new branch:
+1. Fork the Project
+2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the Branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
 
-    <div class="code-block">
-    <pre><code>git checkout -b feature-branch</code></pre>
-    </div>
+---
 
-3. Make your changes and commit them:
+## 🙏 Acknowledgments
 
-    <div class="code-block">
-    <pre><code>git commit -m 'Add new feature'</code></pre>
-    </div>
+This project originally started as a fork of [l0rded/SuicaNFCReader](https://github.com/l0rded/SuicaNFCReader). While the UI and core logic have been completely rewritten to support AI translation and modern design standards, we are deeply grateful to the original project for providing the foundational NFC communication logic and inspiration.
 
-4. Push to the branch:
+---
 
-    <div class="code-block">
-    <pre><code>git push origin feature-branch</code></pre>
-    </div>
+## 📄 License
 
-5. Open a pull request.
-
-## Contact
-
-If you have any questions or suggestions, feel free to reach out to the project maintainer at <a href="mailto:edenabdullahh@gmail.com">edenabdullahh@gmail.com</a>.
+This project is licensed under the MIT License.
