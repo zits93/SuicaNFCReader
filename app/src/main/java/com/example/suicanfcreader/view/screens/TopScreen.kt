@@ -35,6 +35,7 @@ import com.example.suicanfcreader.viewModel.TopScreenViewModel
 
 import androidx.compose.ui.res.stringResource
 import com.example.suicanfcreader.R
+import java.util.Locale
 
 @Composable
 fun TopScreen(
