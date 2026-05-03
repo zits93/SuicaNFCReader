@@ -34,23 +34,10 @@ class TopScreenViewModel(
     fun enableNfcForegroundDispatch(activity: Activity) {
         nfcAdapter?.let { adapter ->
             if (adapter.isEnabled) {
-                val nfcIntentFilter = arrayOf(
-                    IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED),
-                    IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED),
-                    IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED)
-                )
-
-                val pendingIntent =
-                    PendingIntent.getActivity(
-                        activity,
-                        0,
-                        Intent(
-                            activity,
-                            activity.javaClass
-                        ).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
-                        PendingIntent.FLAG_MUTABLE
-                    )
-                adapter.enableForegroundDispatch(activity, pendingIntent, nfcIntentFilter, null)
+                val flags = NfcAdapter.FLAG_READER_NFC_F or NfcAdapter.FLAG_READER_SKIP_NDEF_CHECK
+                adapter.enableReaderMode(activity, { tag ->
+                    handleTag(tag, activity)
+                }, flags, null)
             } else {
                 _showNoNfcDialog.postValue(true)
             }
@@ -58,26 +45,14 @@ class TopScreenViewModel(
     }
 
     fun disableNfcForegroundDispatch(activity: Activity) {
-        nfcAdapter?.disableForegroundDispatch(activity)
+        nfcAdapter?.disableReaderMode(activity)
     }
 
-    fun handleNfcIntent(intent: Intent?,context: Context) {
-        intent?.let {
-            if (intent.action in listOf(
-                    NfcAdapter.ACTION_TAG_DISCOVERED,
-                    NfcAdapter.ACTION_TECH_DISCOVERED,
-                    NfcAdapter.ACTION_NDEF_DISCOVERED
-                )
-            ) {
-                val tag = IntentCompat.getParcelableExtra(it, NfcAdapter.EXTRA_TAG, Tag::class.java)
-                tag?.let {
-                    viewModelScope.launch {
-                        val cards = readTagData(tag, context)
-                        _nfcCards.postValue(cards)
-                        _isDataRefreshed.postValue(true)
-                    }
-                }
-            }
+    fun handleTag(tag: Tag, context: Context) {
+        viewModelScope.launch {
+            val cards = readTagData(tag, context)
+            _nfcCards.postValue(cards)
+            _isDataRefreshed.postValue(true)
         }
     }
 
