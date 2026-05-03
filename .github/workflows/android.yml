@@ -33,6 +33,12 @@ jobs:
         name: suica-reader-apk
         path: app/build/outputs/apk/default/debug/*.apk
 
+    - name: Delete old release
+      if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+      run: gh release delete latest --cleanup-tag -y || true
+      env:
+        GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
     - name: Create Latest Release
       uses: softprops/action-gh-release@v2
       if: github.event_name == 'push' && github.ref == 'refs/heads/main'
