@@ -34,8 +34,8 @@ class TopScreenViewModel(
     
     private var lastRawData: ByteArray? = null
 
-    private val _isTranslatorReady = MutableLiveData<Boolean>(false)
-    val isTranslatorReady: LiveData<Boolean> = _isTranslatorReady
+    private val _isTranslatorReady = MutableLiveData<Boolean?>(null)
+    val isTranslatorReady: LiveData<Boolean?> = _isTranslatorReady
 
     private val _isDownloading = MutableLiveData<Boolean>(false)
     val isDownloading: LiveData<Boolean> = _isDownloading

@@ -47,7 +47,7 @@ fun TopScreen(
     val nfcCards by topScreenViewModel.nfcCards.observeAsState(emptyList())
     val isDataRefreshed by topScreenViewModel.isDataRefreshed.observeAsState(false)
     val isDownloading by topScreenViewModel.isDownloading.observeAsState(false)
-    val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(false)
+    val isTranslatorReady by topScreenViewModel.isTranslatorReady.observeAsState(null)
     var showInfoSheet by remember { mutableStateOf(false) }
     
     val snackbarHostState = remember { SnackbarHostState() }
@@ -59,7 +59,7 @@ fun TopScreen(
 
     // Prompt for download on start if not ready
     LaunchedEffect(isTranslatorReady) {
-        if (!isTranslatorReady && Locale.getDefault().language != "ja" && !isDownloading) {
+        if (isTranslatorReady == false && Locale.getDefault().language != "ja" && !isDownloading) {
             showDownloadPrompt.value = true
         }
     }
