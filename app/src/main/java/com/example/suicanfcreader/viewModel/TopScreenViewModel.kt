@@ -60,6 +60,7 @@ class TopScreenViewModel(
             val success = com.example.suicanfcreader.lib.StationTranslator.downloadModel()
             if (success) {
                 _isTranslatorReady.value = true
+                com.example.suicanfcreader.model.Station.clearCache()
                 refreshTranslations(context)
             } else {
                 android.widget.Toast.makeText(context, "Failed to download translation model.", android.widget.Toast.LENGTH_SHORT).show()

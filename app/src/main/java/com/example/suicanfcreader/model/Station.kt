@@ -17,6 +17,10 @@ data class Station(
         private val stationCacheRaw = mutableMapOf<String, Station>()
         private var isLoaded = false
         private var translations: JSONObject? = null
+        
+        fun clearCache() {
+            stationCache.clear()
+        }
 
         private fun loadTranslations(context: Context) {
             if (translations != null) return
